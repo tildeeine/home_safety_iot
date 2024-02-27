@@ -7,3 +7,6 @@ Used to keep track of resources currently consulting for development, as well as
 RPi api and functionality:
 - [Set up RPi Python Webserver with Flask API](https://towardsdatascience.com/python-webserver-with-flask-and-raspberry-pi-398423cc6f5d)
 
+RPi backend interaction with React frontend:
+- [Flask react template](https://github.com/holyfiddlex/Flask-React-Template)
+- [Control RPi from HTTP web server](https://www.youtube.com/watch?v=owgRkU_-4lw&ab_channel=SoftwareSage)
