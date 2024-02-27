@@ -49,11 +49,18 @@ The proposed solution aims to provide real-time monitoring of potentially danger
 
 
 ## Requirements
-R1: The system must be able to detect a heat source.
-R2: The system must be able to produce sound signals to alert users of a possible issue.
-R3: The system must be able to provide real-time camera updates to monitor appliances.
-R4: The system must be able to deactivate an appliance upon detection of a possible issue.
-R5: There should be a user-friendly dashboard to allow users to see monitoring information.
-R6: The user interface should let the user set the specific parameters for system alarms.
-R7: Sensor information must be correctly and effectively communicated to the dashboard.
-R8: The user must be able to activate the kill switch through the user interface.
+**R1:** The system must be able to detect a heat source.
+
+**R2:** The system must be able to produce sound signals to alert users of a possible issue.
+
+**R3:** The system must be able to provide real-time camera updates to monitor appliances.
+
+**R4:** The system must be able to deactivate an appliance upon detection of a possible issue.
+
+**R5:** There should be a user-friendly dashboard to allow users to see monitoring information.
+
+**R6:** The user interface should let the user set the specific parameters for system alarms.
+
+**R7:** Sensor information must be correctly and effectively communicated to the dashboard.
+
+**R8:** The user must be able to activate the kill switch through the user interface.
