@@ -1,4 +1,11 @@
 # Ambient Intelligence Project - Health Monitoring System
+## Project instructions
+To run the React app locally to see the dashboard, use the following command:
+
+```sh
+npm start
+```
+
 ## Progress plan
 **Project base setup: 26 Feb - 3 Mar**
 - Get the Raspberry Pi (RPi) device
