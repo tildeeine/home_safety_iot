@@ -1,6 +1,6 @@
 # Ambient Intelligence Project - Health Monitoring System
 ## Project instructions
-To run the React app locally to see the dashboard, use the following command:
+To run the React app locally to see the dashboard, use the following command from the "dashboard" folder:
 
 ```sh
 npm start
