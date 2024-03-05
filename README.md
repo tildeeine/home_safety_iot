@@ -1,73 +1,121 @@
-# Ambient Intelligence Project - Health Monitoring System
-## Project instructions
-To run the React app locally to see the dashboard, use the following command from the "dashboard" folder:
+# Home Security Monitoring
 
-```sh
-npm start
+Begin with an introductory paragraph that tells readers the purpose of your solution with hardware and software and its major benefits. 
+Give them a summary of the information you will include in this file using clearly defined sections.
+
+## General Information
+
+This section expands on the introductory paragraph to give readers a better understanding of your project. 
+Include a brief description and answer the question, "what problem does this project solve?"
+
+## Built With
+
+Include an outline of the technologies in the project, such as hardware components (Arduino/Raspberry Pi), operating systems, programming language, database, libraries.
+
+Include links to any related projects (for example, whether this API has corresponding iOS or Android clients), links to online tools related to the application (such as the project web site, the shared file storage).
+If you mention something, please provide links.
+
+### Hardware
+
+* [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) - 1 unit - Development board for reading sensors and sending this information to our dashboard.
+* [PIR Sensor](https://thepihut.com/products/pir-motion-sensor-module) - 3 units - Passive infrared sensor to detect motion
+
+### Software
+
+* [Raspberry Pi OS](https://www.raspberrypi.com/software/) - Operating system
+* [Python]() - Programming language for RPi
+* [Java](https://openjdk.java.net/) - Programming Language and Platform
+* [Maven](https://maven.apache.org/) - Build Tool and Dependency Management
+* ...
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on for testing purposes.  
+
+### Assembly Instructions
+
+Describe step-by-step assembly instructions.
+
+When necessary, and especially when wiring is involved, include diagrams/photos.
+
+### Software Prerequisites
+
+In this section include detailed instructions for installing additiona software the application is dependent upon (such as PostgreSQL database, for example).
+
+```
+installation command
 ```
 
-## Progress plan
-**Project base setup: 26 Feb - 3 Mar**
-- Get the Raspberry Pi (RPi) device
-- Set up the RPi for development (dev environment and internet connection)
-- Make mockup of dashboard design
-- Start development of webpage frontend
-- Set up a way to publicly host the dashboard
+### Installation
 
-End of week milestones: 
-- Have RPi up and running
-- Have dashboard design ready
+Give step-by-step instructions on building and running the application on the testing environment. 
 
-**Sensor and dashboard setup: 4 Mar - 10 Mar**
-- Connect the heat sensor to the RPi and verify that RPi correctly receives data
-- Connect the camera to the RPi and verify that RPi correctly receives device data
-- Connect the speaker to the RPi and verify that RPi correctly receives device data
-- Connect the killswitch mechanism’s motor to RPi and verify that we can activate it
-- Start development of RPi program to receive and process data from the connected devices, and transferring it to the web dashboard backend
-- Start development of dashboard backend to receive data from RPi and process it to be displayed on frontend
-- Verify that backend and frontend work well together
+Describe the step.
 
-End of week milestones: 
-- Finish frontend development
-- Have all RPi-connected devices up and running
-- Be able to communicate with dashboard from RPi
+```
+Give the command example
+```
 
-**Finish system functionality: 11 Mar - 17 Mar**
-- Build the prototype room 
-- Setup the RPi-connected devices in the prototype room
-- Implement dashboard functionality for allowing users to manually set the alert and killswitch timers 
-- Continue work on RPi functionality
-- Start work on project report
+And repeat.
 
-End of week milestones: 
-- Have the prototype room ready for demo, with sensors
-- Have all dashboard functionality finished
-- Have all RPi functionality finished
+```
+until finished
+```
 
-**Delivery week: 18 Mar - 24 Mar**
-- Last touches on project code
-- Finish project report
-Project delivery **20th of march**, report delivery **22nd of march**
+You can also add screenshots to show expected results, when relevant.
 
+### Testing
 
+Explain how to run the tests for this system.
 
-## Solution
-The proposed solution aims to provide real-time monitoring of potentially dangerous home appliances, through sensors and cameras, to reduce risk of damages and alleviate anxiety for both the primary user and their caregivers. By enabling remote killswitch functionality, the system offers increased safety and reassurance.
+Give users explicit instructions on how to run all necessary tests. 
 
+Explain what these tests do and why
 
-## Requirements
-**R1:** The system must be able to detect a heat source.
+```
+Give an example command
+```
 
-**R2:** The system must be able to produce sound signals to alert users of a possible issue.
+## Demo
 
-**R3:** The system must be able to provide real-time camera updates to monitor appliances.
+Give a tour of the best features of the application.
+Add screenshots when relevant.
 
-**R4:** The system must be able to deactivate an appliance upon detection of a possible issue.
+## Deployment
 
-**R5:** There should be a user-friendly dashboard to allow users to see monitoring information.
+Add additional notes about how to deploy this on a host or a cloud provider.
 
-**R6:** The user interface should let the user set the specific parameters for system alarms.
+Mention virtualization/container tools and commands.
 
-**R7:** Sensor information must be correctly and effectively communicated to the dashboard.
+```
+Give an example command
+```
 
-**R8:** The user must be able to activate the kill switch through the user interface.
+Provide instructions for connecting to servers and tell clients how to obtain necessary permissions.
+
+## Additional Information
+
+### Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+### Versioning
+
+We use [SemVer](http://semver.org/) for versioning. 
+For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+### Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+### Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
