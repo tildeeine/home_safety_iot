@@ -1,23 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import './index.css';
+import StatusCard from './StatusCard';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='lg:p-32 lg:px-48 md:p-18 p-10 h-auto flex flex-row flex-wrap justify-evenly'>
+        <StatusCard></StatusCard>
+        <StatusCard></StatusCard>
+        <StatusCard></StatusCard>
+        <StatusCard></StatusCard>
+      </div>
     </div>
   );
 }
