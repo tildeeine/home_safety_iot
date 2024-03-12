@@ -18,7 +18,13 @@ If you mention something, please provide links.
 ### Hardware
 
 * [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) - 1 unit - Development board for reading sensors and sending this information to our dashboard.
-* [PIR Sensor](https://thepihut.com/products/pir-motion-sensor-module) - 3 units - Passive infrared sensor to detect motion
+* [Arduino starter kit](https://store.arduino.cc/collections/kits/products/arduino-starter-kit-multi-language) - Includes a range of the components we used for development. More specifically, we used the following components from the starter kit:
+    * Buzzer
+    * Arduino
+    * Breadboard
+    * f
+* [Nicla Vision](https://store.arduino.cc/products/nicla-vision) - 1 unit - Used for visual monitoring of the stovetop
+* Magnetic door sensors - 1 unit - To monitor fridge and entrance/exit doors
 
 ### Software
 
