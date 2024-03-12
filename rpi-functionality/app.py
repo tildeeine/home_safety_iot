@@ -21,21 +21,32 @@ def monitor_temperature():
         if ser.in_waiting > 0:
             temp_str = ser.readline().decode('utf-8').rstrip()
             try:
-                temp = float(temp_str)
-                print(temp)  # For debugging
+                while True:
+                    if ser.in_waiting > 0:
+                        line = ser.readline().decode('utf-8').rstrip()
+                        # Assuming the line is something like "Temperature: 23.5C"
+                        # Split the line by spaces and take the second element (the temperature)
+                        parts = line.split(' ')
+                        if len(parts) >= 2 and parts[0] == "Temperature:":
+                            # Convert the temperature part to float
+                            temp_str = parts[1].replace('C', '')  # Remove the 'C' at the end
+                            temp = float(temp_str)
+                            print("Temperature:", temp)
+                        else:
+                            print("Invalid data:", line)
                 
-                # Example logic for temperature alerts
-                if temp > 40:
-                    # Check if the duration has passed
-                    if time.time() >= timer_end_time:
-                        print("ALERT: Temperature too high for too long!")
-                        # Reset the timer or take necessary actions
-                        reset_timer()
-                        # Send alert to dashboard 
-                        send_alert_to_dashboard() # Add endpoint and other necessary logic after testing
-                else:
-                    # Reset the timer if temperature goes below threshold
-                    reset_timer()
+                        # Logic for temperature alerts
+                        if temp > 40:
+                            # Check if the duration has passed
+                            if time.time() >= timer_end_time:
+                                print("ALERT: Temperature too high for too long!")
+                                # Reset the timer or take necessary actions
+                                reset_timer()
+                                # Send alert to dashboard 
+                                send_alert_to_dashboard() # Add endpoint and other necessary logic after testing
+                        else:
+                            # Reset the timer if temperature goes below threshold
+                            reset_timer()
             except ValueError:
                 # Handle possible conversion error if temp_str is not a float
                 print(f"Error converting temperature value: {temp_str}")
