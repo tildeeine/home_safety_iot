@@ -5,6 +5,7 @@ import time
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 ser.flush()
 
+
 try:
     while True:
         # Send command to Arduino
