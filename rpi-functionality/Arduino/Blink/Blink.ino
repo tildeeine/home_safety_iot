@@ -1,8 +1,14 @@
+int pinTemp = A1;
+
 void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
+  int temp = analogRead(pinTemp);    //Read the analog pin
+  temp = temp * 0.48828125;   // convert output (mv) to readable celcius
+   Serial.print("Tuva");
+   
   if (Serial.available() > 0) {
     char incomingChar = Serial.read();
     // Process incoming command
@@ -15,3 +21,5 @@ void loop() {
     }
   }
 }
+
+
