@@ -46,7 +46,7 @@ function StatusCard({appliance, icon, timeForFirstAlarm, timeForKillswitch}) {
   return (        
     <a href="#" className="w-1/2 justify-items-center px-3 py-7">
         <div class={"mx-auto block lg:max-w-xl md:max-w-md md:min-h-72 min-h-64 p-7 rounded-lg shadow " + backgroundColor}>
-            <div className='flex flex-row py-6'>
+            <div className='flex flex-row py-6 justify-between'>
                 <h5 class="mb-2 md:text-5xl sm:text-4xl text-2xl font-bold tracking-tight">{(curState === Status.Problem) ? "Problem Found" : "OK"}</h5>
                 <FontAwesomeIcon icon={icon} className="text-5xl p-2"/>
             </div>
