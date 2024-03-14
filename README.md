@@ -32,6 +32,11 @@ If you mention something, please provide links.
 
 These instructions will get you a copy of the project up and running on for testing purposes.  
 
+```sh
+npm install --save @fortawesome/free-solid-svg-icons
+npm install --save @fortawesome/react-fontawesome
+```
+
 ### Assembly Instructions
 
 Describe step-by-step assembly instructions.
