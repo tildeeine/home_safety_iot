@@ -19,7 +19,7 @@ timer_end_time = time.time() + default_timer_duration
 # Global variables to keep last reading
 latest_temperature = 0
 temp_alert_status = 0
-temp = 0 #! start value
+temp = 0
 
 @app.route('/temp_alert_status', methods=['GET'])
 def get_alert_status():
@@ -116,30 +116,20 @@ def reset_timer():
     global timer_end_time
     timer_end_time = time.time() + default_timer_duration
 
-
-
-def main():
-    while True:
-        # Read and process data from other sensors
-        process_sensor_data()
-
-        # This delay helps to prevent the loop from running too fast and overwhelming your RPi or the network.
-        time.sleep(10)
-
-def process_sensor_data():
-    # Handling sensor data
+def start_sensor_processing():
+    # Handling temperature sensor
     monitor_temperature()
 
-    # Add other handling
 
 def turn_off_alarm():
     ser.write(b'A')
-
 
 if __name__ == '__main__':
     # Run Flask app
     # Note: use_reloader=False to prevent the sensor monitoring thread from starting twice
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
-    # Start sensor reading in a background thread
+
     # Starting the temperature monitoring in a separate thread
-    main()
+    monitor_thread = Thread(target=start_sensor_processing)
+    monitor_thread.daemon = True  
+    monitor_thread.start()
