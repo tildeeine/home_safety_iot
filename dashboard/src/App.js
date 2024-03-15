@@ -28,8 +28,8 @@ const alarmCount = 0;
 function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
-    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner },
-    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner }, // Example of other appliance
+    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven' },
+    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door' }, // Example of other appliance
     // Add other appliances as needed
   });
   const [doorStatus, setDoorStatus] = useState({
@@ -43,7 +43,8 @@ function App() {
 
   // Handle card click events
   const handleCardClick = (appliance) => {
-    setSelectedAppliance(appliance);
+    const selectedApplianceInfo = appliances[appliance];
+    setSelectedAppliance(selectedApplianceInfo);
     setIsModalOpen(true);
   };
 
@@ -145,11 +146,8 @@ function App() {
           <Modal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            appliance={selectedAppliance}
-            adjustTimerEndpoint={`${RPI_URL}/alert_time`}
-            temperature={appliances[selectedAppliance]?.temperature}
+            applianceInfo={selectedAppliance}
             RPI_URL={RPI_URL}
-            status={appliances[selectedAppliance]?.status}
           />
         </div>
       </div>
