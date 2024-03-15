@@ -15,7 +15,7 @@ void loop() {
   if (Serial.available() > 0) {
     print("incoming information")
     String incomingString = Serial.readString();
-    print(incomingString)
+    //print(incomingString)
     //char incomingChar = Serial.read();
     
     if (incomingString == 'timer off') {
