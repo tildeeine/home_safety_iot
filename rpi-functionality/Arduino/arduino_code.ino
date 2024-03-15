@@ -1,11 +1,12 @@
 int pinTemp = A1;   //This is where our Output data goes
+float temp;
 
 void setup() {
   Serial.begin(9600);
 }
 
 void loop() {
-  int temp = analogRead(pinTemp);   
+  temp = analogRead(pinTemp);   
   temp = temp * 0.48828125;   
   Serial.print("Temperature: ");
   Serial.print(temp);
@@ -24,3 +25,5 @@ void loop() {
     }
   }
 }
+
+// Command for starting program: arduino-cli compile --fqbn arduino:avr:uno temperature.ino

@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import Modal from './Modal';
 import { faFireBurner } from '@fortawesome/free-solid-svg-icons';
 
-const RPi_IP = "172.20.10.7";
+const RPi_IP = "172.20.10.14";
 const RPi_port = "5000";
 const RPi_URL = `http://${RPi_IP}:${RPi_port}`;
 
