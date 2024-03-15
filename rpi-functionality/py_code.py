@@ -8,6 +8,7 @@ ser.flush()
 
 try:
     while True:
+        print(ser.in_waiting)
         # Send command to Arduino
         command = input("Enter command (A/B): ")
         ser.write(command.encode())

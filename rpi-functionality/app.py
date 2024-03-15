@@ -19,15 +19,16 @@ timer_end_time = time.time() + default_timer_duration
 def monitor_temperature():
     print("inside monitor_temperature()")
     while True:
+        print(ser.in_waiting)
         if ser.in_waiting > 0:
-            #temp_str = ser.readline().decode('utf-8').rstrip()
-            temp_str = ser.readline().decode().strip()
+            temp_str = ser.readline().decode('utf-8').rstrip()
+            #temp_str = ser.readline().decode().strip()
             try:
                 while True:
                     if ser.in_waiting > 0:
                         print("inside in_waiting")
-                        line = ser.readline().decode().strip()
-                        #line = ser.readline().decode('utf-8').rstrip()
+                        #line = ser.readline().decode().strip()
+                        line = ser.readline().decode('utf-8').rstrip()
                         print("reading input from rpi")
                         # Assuming the line is something like "Temperature: 23.5C"
                         # Split the line by spaces and take the second element (the temperature)
