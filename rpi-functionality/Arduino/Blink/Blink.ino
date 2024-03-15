@@ -13,12 +13,13 @@ void loop() {
   delay(1000);
   
   if (Serial.available() > 0) {
-    String incomingString = Serial.readString();
+    //String incomingString = Serial.readString();
+    char incomingChar = Serial.read();
     Serial.println("Command received");
 
-    if (incomingString == 'timer off') {
+    if (incomingChar == 'A') {
       Serial.println("Command off received");
-    } else if (incomingString == 'timer on') {
+    } else if (incomingChar == 'B') {
       Serial.println("Command timer on received");
 	    int pitch = map(160,0,200, 50, 4000);
 	    tone(8,pitch,20);

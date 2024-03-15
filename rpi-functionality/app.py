@@ -47,7 +47,7 @@ def monitor_temperature():
                             # Check if the duration has passed
                             if time.time() >= timer_end_time:
                                 print("ALERT: Temperature too high for too long!")
-                                ser.write(b'timer on')
+                                ser.write(b'B')
                                 # Reset the timer or take necessary actions
                                 reset_timer()
                                 # Send alert to dashboard 
@@ -91,7 +91,7 @@ def process_sensor_data():
     # Add other handling
 
 def turn_off_alarm():
-    ser.write(b'timer off')
+    ser.write(b'A')
     
 
 def check_for_dashboard_alerts():
