@@ -1,11 +1,12 @@
-from flask import Flask, jsonify, request
-from threading import Thread, Lock
+from flask import Flask, Response, jsonify, request
+from flask_cors import CORS
 import serial
 import time
 from threading import Thread
 
 # Flask setup
 app = Flask(__name__)
+CORS(app)  # Enable CORS
 
 # Setup serial connection (adjust to your Arduino's serial port)
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
@@ -15,8 +16,29 @@ ser.flush()
 default_timer_duration = 3 #60*60 #! test values
 timer_end_time = time.time() + default_timer_duration
 
+# Global variables to keep last reading
+latest_temperature = 0
+temp_alert_status = False
+
+@app.route('/temp_alert_status', methods=['GET'])
+def get_alert_status():
+    return jsonify({"alert": temp_alert_status})
+
+@app.route('/temperature', methods=['GET', 'POST'])
+def temperature():
+    global latest_temperature
+    if request.method == 'POST':
+        # Update the latest temperature with the data received from the POST request
+        data = request.json
+        latest_temperature = data.get('temperature')
+        return Response("Temperature updated", status=200)
+    else:
+        # Return the latest temperature reading
+        return jsonify({"temperature": latest_temperature})
+
 # Function to monitor temperature
 def monitor_temperature():
+    global latest_temperature, temp_alert_status, timer_end_time
     print("inside monitor_temperature()")
     while True:
         print(ser.in_waiting)
@@ -37,6 +59,7 @@ def monitor_temperature():
                             # Convert the temperature part to float
                             temp_str = parts[1].replace('C', '')  # Remove the 'C' at the end
                             temp = float(temp_str)
+                            latest_temperature = temp
                             print("Temperature:", temp)
                         else:
                             print("Invalid data:", line)
@@ -46,6 +69,7 @@ def monitor_temperature():
                             # Check if the duration has passed
                             if time.time() >= timer_end_time:
                                 print("ALERT: Temperature too high for too long!")
+                                temp_alert_status = True
                                 ser.write('B')
                                 # Reset the timer or take necessary actions
                                 reset_timer()
@@ -54,6 +78,7 @@ def monitor_temperature():
                         else:
                             # Reset the timer if temperature goes below threshold
                             reset_timer()
+                            temp_alert_status = False
             except ValueError:
                 # Handle possible conversion error if temp_str is not a float
                 print(f"Error converting temperature value: {temp_str}")
@@ -116,6 +141,9 @@ if __name__ == '__main__':
     # Start sensor reading in a background thread
     sensor_thread = Thread(target=process_sensor_data(), daemon=True)
     sensor_thread.start()
+    # Run Flask app
+    # Note: use_reloader=False to prevent the sensor monitoring thread from starting twice
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
 
 # # Set up the GPIO pins #! Not sure if needed
 # GPIO.setup(heat_sensor_pin, GPIO.IN)
