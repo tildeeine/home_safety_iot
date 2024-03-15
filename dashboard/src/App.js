@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
-import StatusCard from './StatusCard';
+import StatusCardOven from './StatusCardOven';
+import DoorStatusCard from './StatusCardDoor';
 import Sidebar from './Sidebar';
 import Modal from './Modal';
-import { faFireBurner } from '@fortawesome/free-solid-svg-icons';
+import { faFireBurner, faDoorClosed, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+
 
 // Constants for API URLs
 const RPI_IP = "172.20.10.14";
@@ -26,9 +28,13 @@ const alarmCount = 0;
 function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
-    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner },
-    Door: { status: Status.OK, icon: faFireBurner }, // Example of other appliance
+    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven' },
+    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door' }, // Example of other appliance
     // Add other appliances as needed
+  });
+  const [doorStatus, setDoorStatus] = useState({
+    isOpen: false,
+    lastOpened: 'Not available'
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppliance, setSelectedAppliance] = useState(null);
@@ -37,7 +43,8 @@ function App() {
 
   // Handle card click events
   const handleCardClick = (appliance) => {
-    setSelectedAppliance(appliance);
+    const selectedApplianceInfo = appliances[appliance];
+    setSelectedAppliance(selectedApplianceInfo);
     setIsModalOpen(true);
   };
 
@@ -47,20 +54,23 @@ function App() {
       const responses = await Promise.all([
         axios.get(`${RPI_URL}/temperature`),
         axios.get(`${RPI_URL}/temp_alert_status`),
+        axios.get(`${RPI_URL}/door_open_status`),
+        axios.get(`${RPI_URL}/door_last_opened`),
+        axios.get(`${RPI_URL}/door_alert_Status`),
         // Add other endpoints as needed for different appliances
       ]);
       const tempResponse = responses[0];
-      const alertResponse = responses[1];
+      const ovenAlert = responses[1];
+      const doorOpenStatus = responses[2];
+      const lastOpened = responses[3];
+      const doorAlert = responses[4];
 
-      // Update only the oven's temperature and status
-      setAppliances(prev => ({
-        ...prev,
-        Oven: {
-          ...prev.Oven,
-          temperature: tempResponse.data.temperature,
-          status: alertResponse.data.alert >= 2 ? Status.PROBLEM : alertResponse.data.alert === 1 ? Status.WARNING : Status.OK
-        },
-        // Update other appliances here if needed
+      // Update only inputs and status'
+      setAppliances(prevAppliances => ({
+        ...prevAppliances,
+        Oven: { ...prevAppliances.Oven, temperature: tempResponse, status: ovenAlert },
+        Door: { ...prevAppliances.Door, isOpen: doorOpenStatus, lastOpened: lastOpened, status: doorAlert },
+        // Update other appliances similarly
       }));
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -103,28 +113,45 @@ function App() {
       <Sidebar />
       <div className='absolute inset-0 z-10 w-screen h-full xl:p-32 xl:pr-48 xl:pl-96 md:p-18 md:pl-52 p-10 h-auto flex flex-row flex-wrap justify-evenly bg-gray-800'>
         {/* <img src={imageUrl} alt="Latest from Nicla Vision" /> */}
-        {Object.entries(appliances).map(([name, { icon, status, temperature }]) => (
-          <StatusCard
-            key={name}
-            appliance={name}
-            icon={icon}
-            status={status}
-            temperature={name === "Oven" ? temperature : undefined}
-            onClick={() => handleCardClick(name)}
+        <div className='status-cards-container'>
+          {Object.entries(appliances).map(([name, appliance]) => {
+            switch (name) {
+              case "Oven":
+                return (
+                  <StatusCardOven
+                    key={name}
+                    appliance={name}
+                    icon={appliance.icon}
+                    status={appliance.status}
+                    temperature={appliance.temperature}
+                    onClick={() => handleCardClick(name)}
+                  />
+                );
+              case "Door":
+                return (
+                  <DoorStatusCard
+                    key={name}
+                    appliance={name}
+                    isOpen={appliance.isOpen}
+                    lastOpened={appliance.lastOpened}
+                    onClick={() => handleCardClick(name)}
+                    status={appliance.status}
+                  />
+                );
+              default:
+                // Handle other appliances or return null if no specific component
+                return null;
+            }
+          })}
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            applianceInfo={selectedAppliance}
+            RPI_URL={RPI_URL}
           />
-
-        ))}
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          appliance={selectedAppliance}
-          adjustTimerEndpoint={`${RPI_URL}/alert_time`}
-          temperature={appliances[selectedAppliance]?.temperature}
-          RPI_URL={RPI_URL}
-          status={appliances[selectedAppliance]?.status}
-        />
+        </div>
       </div>
-    </div >
+    </div>
   );
 }
 
