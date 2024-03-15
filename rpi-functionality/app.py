@@ -19,7 +19,7 @@ timer_end_time = time.time() + default_timer_duration
 def monitor_temperature():
     print("inside monitor_temperature()")
     while True:
-        print(ser.in_waiting)
+        #print(ser.in_waiting)
         if ser.in_waiting > 0:
             temp_str = ser.readline().decode('utf-8').rstrip()
             #temp_str = ser.readline().decode().strip()
