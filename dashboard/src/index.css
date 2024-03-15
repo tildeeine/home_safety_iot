@@ -69,4 +69,44 @@ code {
   transition: visibility 0.4s, opacity 0.5s, max-height 1.9s, scale 0.1s ease-in-out;
   transition-delay: 0.3s;
 }
+
+/* Overlay to dim the background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+}
+
+/* Modal styling */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 60%;
+  /* Adjust based on your preference */
+  min-height: 60%;
+  /* Adjust based on your preference */
+  /* Similar to your StatusCard */
+  padding: 20px;
+  z-index: 100;
+  border-radius: 20px;
+  /* Rounded corners like StatusCard */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Optional: Adds depth to the modal */
+  /* Add more styling as needed */
+}
+
+/* Modal content styling for consistency with StatusCard */
+.modal-content {
+  color: #333;
+  /* Adjust based on your theme */
+  /* Add more content-specific styles here */
+}
+
+
 /* -------------------------------------------- */
