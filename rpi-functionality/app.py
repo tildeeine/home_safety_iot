@@ -15,11 +15,9 @@ ser.flush()
 default_timer_duration = 6 #60*60 #! test values
 timer_end_time = time.time() + default_timer_duration
 
-# Variable to test if we can send stuff to the arduino
-take_action = False
-
 # Function to monitor temperature
 def monitor_temperature():
+    print("inside monitor_temperature()")
     while True:
         if ser.in_waiting > 0:
             temp_str = ser.readline().decode('utf-8').rstrip()
@@ -43,11 +41,7 @@ def monitor_temperature():
                             # Check if the duration has passed
                             if time.time() >= timer_end_time:
                                 print("ALERT: Temperature too high for too long!")
-                                take_action = True 
-                                if take_action == True:
-                                    ser.write('B')
-                                else:
-                                    ser.write('A')
+                                ser.write('B')
                                 # Reset the timer or take necessary actions
                                 reset_timer()
                                 # Send alert to dashboard 
