@@ -33,6 +33,7 @@ def monitor_temperature():
                         # Assuming the line is something like "Temperature: 23.5C"
                         # Split the line by spaces and take the second element (the temperature)
                         parts = line.split(' ')
+                        print(parts)
                         if len(parts) >= 2 and parts[0] == "Temperature:":
                             # Convert the temperature part to float
                             temp_str = parts[1].replace('C', '')  # Remove the 'C' at the end
