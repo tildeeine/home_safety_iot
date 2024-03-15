@@ -12,7 +12,7 @@ ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 ser.flush()
 
 # Default timer duration in seconds (1 hour)
-default_timer_duration = 6 #60*60 #! test values
+default_timer_duration = 3 #60*60 #! test values
 timer_end_time = time.time() + default_timer_duration
 
 # Function to monitor temperature

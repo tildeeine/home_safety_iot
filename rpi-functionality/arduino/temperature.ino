@@ -10,6 +10,6 @@ void loop() {
   Serial.print(temp);
   Serial.println("C");  //print the temperature status
   delay(1000);
-  int pitch = map(temp,0,200, 50, 4000);
-  tone(8,pitch,20);
 }
+
+// Command for starting program: arduino-cli compile --fqbn arduino:avr:uno temperature.ino
