@@ -17,7 +17,7 @@ void loop() {
     String incomingString = Serial.readString();
     //print(incomingString)
     //char incomingChar = Serial.read();
-    
+    Serial.println("incoming string",incomingString);
     if (incomingString == 'timer off') {
       Serial.println("Command off received");
     } else if (incomingString == 'timer on') {
