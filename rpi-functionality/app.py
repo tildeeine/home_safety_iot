@@ -125,11 +125,12 @@ def turn_off_alarm():
     ser.write(b'A')
 
 if __name__ == '__main__':
-    # Run Flask app
-    # Note: use_reloader=False to prevent the sensor monitoring thread from starting twice
-    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
-
     # Starting the temperature monitoring in a separate thread
     monitor_thread = Thread(target=start_sensor_processing)
     monitor_thread.daemon = True  
     monitor_thread.start()
+
+    # Run Flask app
+    # Note: use_reloader=False to prevent the sensor monitoring thread from starting twice
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
+
