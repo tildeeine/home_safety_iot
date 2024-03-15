@@ -43,6 +43,8 @@ npm install --save @fortawesome/free-solid-svg-icons
 npm install --save @fortawesome/react-fontawesome
 ```
 
+Add code to the arduino: Connect to the RPi, 
+
 ### Assembly Instructions
 
 Describe step-by-step assembly instructions.
