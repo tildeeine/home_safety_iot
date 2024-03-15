@@ -44,6 +44,10 @@ def monitor_temperature():
                             if time.time() >= timer_end_time:
                                 print("ALERT: Temperature too high for too long!")
                                 take_action = True 
+                                if take_action == True:
+                                    ser.write('B')
+                                else:
+                                    ser.write('A')
                                 # Reset the timer or take necessary actions
                                 reset_timer()
                                 # Send alert to dashboard 
@@ -70,11 +74,6 @@ def main():
     while True:
         # Check for and process any commands from the dashboard
         check_for_dashboard_alerts()
-        
-        if take_action == True:
-            ser.write('B')
-        else:
-            ser.write('A')
 
         # Read and process data from other sensors
         process_sensor_data()
