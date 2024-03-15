@@ -140,8 +140,7 @@ def turn_off_alarm():
 
 if __name__ == '__main__':
     # Start sensor reading in a background thread
-    sensor_thread = Thread(target=process_sensor_data(), daemon=True)
-    sensor_thread.start()
+    main()
     # Run Flask app
     # Note: use_reloader=False to prevent the sensor monitoring thread from starting twice
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
