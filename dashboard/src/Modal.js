@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Modal = ({ isOpen, onClose, appliance, temperature, icon, adjustTimerEndpoint, status, RPi_URL }) => {
-    // Construct the dynamic class name based on the status
-    const modalClassNames = `modal ${status === 'Warning' ? "bg-amber-300 text-gray-800" : "bg-lime-300 text-gray-800"} modal text-center p-5`;
+const Status = {
+    OK: 'OK',
+    WARNING: 'Warning',
+    PROBLEM: 'Problem'
+};
+
+const Modal = ({ isOpen, onClose, appliance, adjustTimerEndpoint, temperature, RPi_URL, status }) => {
+
+    const backgroundColorClasses = {
+        [Status.OK]: "bg-lime-300 hover:bg-lime-200 text-gray-800",
+        [Status.WARNING]: "bg-amber-300 hover:bg-amber-200 text-gray-800",
+        [Status.PROBLEM]: "bg-orange-600 hover:bg-orange-500 text-gray-100",
+    };
 
     const [newTimerDuration, setNewTimerDuration] = useState('');
     const [currentAlertTime, setCurrentAlertTime] = useState('');
+
+    console.log("dict result", backgroundColorClasses[status]);
 
     useEffect(() => {
         if (isOpen) {
@@ -23,7 +35,6 @@ const Modal = ({ isOpen, onClose, appliance, temperature, icon, adjustTimerEndpo
             fetchAlertTime();
         }
     }, [isOpen, RPi_URL]);
-
 
     const handleTimerAdjustment = async (e) => {
         e.preventDefault();
@@ -44,8 +55,8 @@ const Modal = ({ isOpen, onClose, appliance, temperature, icon, adjustTimerEndpo
             {isOpen && (
                 <>
                     <div className="overlay" onClick={onClose}></div>
-                    <div className={modalClassNames}>
-                        <div className='modal-content text-lg'>
+                    <div className={`modal ${backgroundColorClasses[status]} text-center`}>
+                        <div className={`modal-content text-lg`}>
                             <h2 className="mb-6 mt-6 text-3xl font-bold">{appliance}</h2>
                             <p>Current Temperature: {temperature}°C</p>
                             <p className="mt-4">Current Alert Time: {currentAlertTime} minutes</p>
@@ -66,7 +77,8 @@ const Modal = ({ isOpen, onClose, appliance, temperature, icon, adjustTimerEndpo
                         </div>
                     </div>
                 </>
-            )};
+            )
+            };
         </>
     );
 };

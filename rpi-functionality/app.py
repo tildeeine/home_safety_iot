@@ -18,7 +18,7 @@ timer_end_time = time.time() + default_timer_duration
 
 # Global variables to keep last reading
 latest_temperature = 0
-temp_alert_status = False
+temp_alert_status = 0
 
 @app.route('/temp_alert_status', methods=['GET'])
 def get_alert_status():
@@ -100,7 +100,7 @@ def monitor_temperature():
                             # Check if the duration has passed
                             if time.time() >= timer_end_time:
                                 print("ALERT: Temperature too high for too long!")
-                                temp_alert_status = True
+                                temp_alert_status += 1
                                 ser.write(b'B')
                                 # Reset the timer or take necessary actions
                                 reset_timer()
@@ -109,7 +109,7 @@ def monitor_temperature():
                         else:
                             # Reset the timer if temperature goes below threshold
                             reset_timer()
-                            temp_alert_status = False
+                            temp_alert_status = 0
             except ValueError:
                 # Handle possible conversion error if temp_str is not a float
                 print(f"Error converting temperature value: {temp_str}")
@@ -179,19 +179,3 @@ if __name__ == '__main__':
     # Run Flask app
     # Note: use_reloader=False to prevent the sensor monitoring thread from starting twice
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
-
-# # Set up the GPIO pins #! Not sure if needed
-# GPIO.setup(heat_sensor_pin, GPIO.IN)
-# GPIO.setup(speaker_pin, GPIO.OUT)
-# GPIO.setup(camera_pin, GPIO.IN)
-# GPIO.setup(killswitch_pin, GPIO.OUT)
-
-# # Capture an image from the camera every few seconds
-# camera_status = GPIO.input(camera_pin)
-# time.sleep(5)  # Adjust time as needed
-    
-# # Set up for reading connected device data, but without logic
-# heat_data = heat_sensor.value
-# camera.capture('image.jpg')
-# killswitch.move()
-# speaker.play('sound.mp3')
