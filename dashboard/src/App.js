@@ -6,9 +6,10 @@ import Sidebar from './Sidebar';
 import Modal from './Modal';
 import { faFireBurner } from '@fortawesome/free-solid-svg-icons';
 
-const RPi_IP = "172.20.10.14";
-const RPi_port = "5000";
-const RPi_URL = `http://${RPi_IP}:${RPi_port}`;
+// Constants for API URLs
+const RPI_IP = "172.20.10.14";
+const RPI_PORT = "5000";
+const RPI_URL = `http://${RPI_IP}:${RPI_PORT}`;
 
 const NICLA_VISION_IP = "172.20.10.14";
 const NICLA_VISION_PORT = "8000";
@@ -21,22 +22,25 @@ const Status = {
 };
 
 function App() {
+  // State hooks
   const [temperature, setTemperature] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAppliance, setSelectedAppliance] = useState(null); // Assuming you have multiple appliances
-  const [status, setStatus] = useState('OK');
+  const [selectedAppliance, setSelectedAppliance] = useState(null);
+  const [status, setStatus] = useState(Status.OK);
   const [alarmCount, setAlarmCount] = useState(0);
   const [imageUrl, setImageUrl] = useState('');
 
+  // Handle card click events
   const handleCardClick = (appliance) => {
     setSelectedAppliance(appliance);
     setIsModalOpen(true);
   };
 
+  // Fetch temperature and alarm count from the server
   const fetchData = async () => {
     try {
-      const tempResponse = await axios.get(RPi_URL + '/temperature');
-      const alertResponse = await axios.get(RPi_URL + '/temp_alert_status');
+      const tempResponse = await axios.get(RPI_URL + '/temperature');
+      const alertResponse = await axios.get(RPI_URL + '/temp_alert_status');
       setTemperature(tempResponse.data.temperature);
       setAlarmCount(alertResponse.data.alert);
     } catch (error) {
@@ -44,42 +48,43 @@ function App() {
     }
   };
 
+  // Fetch the latest image from camera
   useEffect(() => {
     const fetchImage = async () => {
-      const imageUrl = NICLA_VISION_URL + '/latest-image';
+      const imageUrl = `${NICLA_VISION_URL}/latest-image`;
       setImageUrl(`${imageUrl}?t=${new Date().getTime()}`); // Cache busting
     };
 
     fetchImage();
     const interval = setInterval(fetchImage, 5000); // Poll every 5 seconds
-
     return () => clearInterval(interval);
   }, []);
 
-  const getStatus = (count) => {
-    if (count >= 2) return Status.PROBLEM;
-    if (count === 1) return Status.WARNING;
-    return Status.OK;
-  };
-
+  // Update status based on alarm count
   useEffect(() => {
-    setStatus(getStatus(alarmCount));
+    const determineStatus = (count) => {
+      if (count >= 2) return Status.PROBLEM;
+      if (count === 1) return Status.WARNING;
+      return Status.OK;
+    };
 
+    setStatus(determineStatus(alarmCount));
   }, [alarmCount]);
 
+
+  // Poll for data periodically
   useEffect(() => {
-    console.log("Fetching data. Status ", status);
+    console.log("Fetching data. Status:", status);
     fetchData();
-    const interval = setInterval(fetchData, 5000); // Adjust interval as needed
+    const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
-  });
+  }, [status]); // Rerun when status changes
 
   return (
-
     <div className="relative flex flex-row min-h-screen">
-      <Sidebar></Sidebar>
+      <Sidebar />
       <div className='absolute inset-0 z-10 w-screen h-full xl:p-32 xl:pr-48 xl:pl-96 md:p-18 md:pl-52 p-10 h-auto flex flex-row flex-wrap justify-evenly bg-gray-800'>
-        <img src={imageUrl} alt="Latest from Nicla Vision" />
+        {/* <img src={imageUrl} alt="Latest from Nicla Vision" /> */}
         <StatusCard
           appliance="Oven"
           icon={faFireBurner}
@@ -115,9 +120,9 @@ function App() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           appliance={selectedAppliance}
-          adjustTimerEndpoint={`${RPi_URL}/adjust_timer`}
+          adjustTimerEndpoint={`${RPI_URL}/alert_time`}
           temperature={temperature}
-          RPi_URL={RPi_URL}
+          RPI_URL={RPI_URL}
           status={status}
         />
       </div>

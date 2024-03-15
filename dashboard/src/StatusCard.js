@@ -7,35 +7,18 @@ const Status = {
     WARNING: 'Warning',
     PROBLEM: 'Problem'
 };
+const backgroundColorClasses = {
+    [Status.OK]: "bg-lime-300 hover:bg-lime-200 text-gray-800",
+    [Status.WARNING]: "bg-amber-300 hover:bg-amber-200 text-gray-800",
+    [Status.PROBLEM]: "bg-orange-600 hover:bg-orange-500 text-gray-100",
+};
 
 function StatusCard({ appliance, icon, status, temperature, onClick }) {
-    const backgroundColorClasses = {
-        [Status.OK]: "bg-lime-300 hover:bg-lime-200 text-gray-800",
-        [Status.WARNING]: "bg-amber-300 hover:bg-amber-200 text-gray-800",
-        [Status.PROBLEM]: "bg-orange-600 hover:bg-orange-500 text-gray-100",
-    };
-
     const statusMessage = {
         [Status.OK]: `The ${appliance} is off.`,
         [Status.WARNING]: `Warning: The ${appliance}'s temperature is high!`,
         [Status.PROBLEM]: `Problem: The ${appliance} needs immediate attention!`,
     };
-
-    // const applianceTurnedOn = () => {
-    //     setCurState(Status.Warning);
-    // };
-
-    // const afterFirstAlarm = () => {
-    //     setCurState(Status.Problem);
-    // }
-
-    // const turnOffAppliance = () => {
-    //     setCurState(Status.OK);
-    // }
-
-    // useEffect(() => {
-    //     turnOffAppliance();
-    // }, []);
 
     return (
         <button className="link-like-button w-1/2 justify-items-center px-3 py-7" onClick={onClick}>
