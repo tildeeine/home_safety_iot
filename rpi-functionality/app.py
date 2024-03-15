@@ -24,7 +24,9 @@ def monitor_temperature():
             try:
                 while True:
                     if ser.in_waiting > 0:
+                        print("inside in_waiting")
                         line = ser.readline().decode('utf-8').rstrip()
+                        print("reading input from arduino")
                         # Assuming the line is something like "Temperature: 23.5C"
                         # Split the line by spaces and take the second element (the temperature)
                         parts = line.split(' ')
