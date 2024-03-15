@@ -7,7 +7,11 @@ void setup() {
 void loop() {
   int temp = analogRead(pinTemp);    //Read the analog pin
   temp = temp * 0.48828125;   // convert output (mv) to readable celcius
-   Serial.print("Tuva");
+  Serial.print("Temperature: ");
+  Serial.print("Tuva");
+  Serial.print(temp);
+  Serial.println("C");  //print the temperature status
+  delay(1000);
    
   if (Serial.available() > 0) {
     char incomingChar = Serial.read();
