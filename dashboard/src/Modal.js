@@ -51,7 +51,7 @@ const Modal = ({ isOpen, onClose, appliance, temperature, icon, adjustTimerEndpo
                             <p className="mt-4">Current Alert Time: {currentAlertTime} minutes</p>
                             <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
                                 <label htmlFor="timerDuration" className="mb-2">
-                                    Set new alert time (minutes):
+                                    Set New Alert Time (minutes):
                                 </label>
                                 <input
                                     id="timerDuration"

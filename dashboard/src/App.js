@@ -53,11 +53,11 @@ function App() {
           onClick={() => handleCardClick("Oven")}
         />
         <StatusCard
-          appliance="oven"
+          appliance="Door"
           icon={faFireBurner}
           status={alertStatus ? 'Warning' : 'OK'}
           temperature={temperature}
-          onClick={() => handleCardClick("oven")}
+          onClick={() => handleCardClick("Door")}
         />
         <StatusCard
           appliance="oven"
