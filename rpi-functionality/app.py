@@ -20,6 +20,7 @@ timer_end_time = time.time() + default_timer_duration
 latest_temperature = 0
 temp_alert_status = 0
 temp = 0
+temp_threshold = 80 #! Since sensor reading wrong
 
 @app.route('/temp_alert_status', methods=['GET'])
 def get_alert_status():
@@ -93,7 +94,7 @@ def monitor_temperature():
                             print("Invalid data:", line)
                 
                         # Logic for temperature alerts
-                        if temp > 40:
+                        if temp > temp_threshold:
                             # Check if the duration has passed
                             if time.time() >= timer_end_time:
                                 print("ALERT: Temperature too high for too long!")
@@ -104,8 +105,8 @@ def monitor_temperature():
 
                         else:
                             # Reset the timer if temperature goes below threshold
-                            reset_timer()
                             temp_alert_status = 0
+                            reset_timer()
             except ValueError:
                 # Handle possible conversion error if temp_str is not a float
                 print(f"Error converting temperature value: {temp_str}")
