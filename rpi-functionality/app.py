@@ -24,6 +24,25 @@ temp_alert_status = False
 def get_alert_status():
     return jsonify({"alert": temp_alert_status})
 
+@app.route('/alert_time', methods=['GET', 'POST'])
+def alert_time():
+    global default_timer_duration
+    if request.method == 'POST':
+        # Update the alert time
+        data = request.json
+        try:
+            new_duration = int(data['duration'])
+            if new_duration > 0:  # Basic validation
+                default_timer_duration = new_duration*60  # Convert minutes to seconds
+                return jsonify({"message": "Alert time updated successfully", "duration": new_duration}), 200
+            else:
+                return jsonify({"message": "Invalid duration provided"}), 400
+        except (ValueError, KeyError, TypeError):
+            return jsonify({"message": "Error processing request"}), 400
+    else:
+        # GET request - Return the current alert time
+        return jsonify({"duration": default_timer_duration}), 200
+
 @app.route('/temperature', methods=['GET', 'POST'])
 def temperature():
     global latest_temperature
@@ -35,6 +54,17 @@ def temperature():
     else:
         # Return the latest temperature reading
         return jsonify({"temperature": latest_temperature})
+    
+@app.route('/adjust_timer', methods=['POST'])
+def adjust_timer():
+    global default_timer_duration
+    data = request.json
+    new_duration = data.get('duration')
+    if new_duration and isinstance(new_duration, int):
+        default_timer_duration = new_duration
+        return jsonify({"message": "Timer duration updated successfully", "duration": new_duration}), 200
+    else:
+        return jsonify({"message": "Invalid duration provided"}), 400
 
 # Function to monitor temperature
 def monitor_temperature():

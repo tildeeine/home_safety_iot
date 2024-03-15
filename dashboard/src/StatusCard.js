@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
 
-function StatusCard({ appliance, icon, status, temperature }) {
+function StatusCard({ appliance, icon, status, temperature, onClick }) {
     const backgroundColor = status === 'Warning' ? "bg-amber-300 hover:bg-amber-200 text-gray-800" : "bg-lime-300 hover:bg-lime-200 text-gray-800";
     const statusMessage = status === 'Warning' ? `Warning: The ${appliance}'s temperature is high!` : `The ${appliance} is off.`;
 
@@ -42,7 +42,7 @@ function StatusCard({ appliance, icon, status, temperature }) {
     // }, []);
 
     return (
-        <button className="link-like-button w-1/2 justify-items-center px-3 py-7" onClick={() => { }}>
+        <button className="link-like-button w-1/2 justify-items-center px-3 py-7" onClick={onClick}>
             <div className={`mx-auto block lg:max-w-xl md:max-w-md md:min-h-72 min-h-64 p-7 rounded-lg shadow ${backgroundColor}`}>
                 <div className='flex flex-row py-6 justify-between'>
                     <h5 className="mb-2 md:text-5xl sm:text-4xl text-2xl font-bold tracking-tight text-gray-800">{status}</h5>
