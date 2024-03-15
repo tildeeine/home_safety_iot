@@ -1,3 +1,9 @@
+@import "tailwindcss/base";
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,3 +17,56 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Side bar -------------------------- */
+.show {
+  width: 20em;
+  transition: width 0.5s ease-in-out;
+}
+
+.noShow {
+  width: 10em;
+  transition: width 0.5s ease-in-out;
+  transition-delay: 0.5s;
+}
+
+.bookPositionshow {
+  padding-left: 10px;
+  transition: padding 0.5s ease-in-out
+}
+
+.bookPositionnoShow {
+  padding-left: 32px;
+  transition: padding 0.5s ease-in-out
+}
+
+.sidebar-noShow {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.5s, opacity 0.5s linear;
+}
+
+.sidebar-show {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0.4s, opacity 0.5s ease-in-out;
+  transition-delay: 0.4s;
+}
+
+.options-noShow {
+  visibility: hidden;
+  opacity: 0;
+  max-height: 0px;
+  scale: 95%;
+  transition: visibility 0.5s, opacity 0.5s, max-height 1.1s, scale 0.1s ease-out;
+}
+
+.options-show {
+  visibility: visible;
+  opacity: 1;
+  max-height: 1000px;
+  scale: 100%;
+  transition: visibility 0.4s, opacity 0.5s, max-height 1.9s, scale 0.1s ease-in-out;
+  transition-delay: 0.3s;
+}
+/* -------------------------------------------- */
