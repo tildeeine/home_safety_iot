@@ -19,6 +19,7 @@ timer_end_time = time.time() + default_timer_duration
 # Global variables to keep last reading
 latest_temperature = 0
 temp_alert_status = 0
+temp = 0 #! start value
 
 @app.route('/temp_alert_status', methods=['GET'])
 def get_alert_status():
@@ -68,7 +69,7 @@ def adjust_timer():
 
 # Function to monitor temperature
 def monitor_temperature():
-    global latest_temperature, temp_alert_status, timer_end_time
+    global latest_temperature, temp_alert_status, timer_end_time, temp
     while True:
         if ser.in_waiting > 0:
             temp_str = ser.readline().decode('utf-8').rstrip()
