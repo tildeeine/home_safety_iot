@@ -33,7 +33,7 @@ def monitor_temperature():
                         # Assuming the line is something like "Temperature: 23.5C"
                         # Split the line by spaces and take the second element (the temperature)
                         parts = line.split(' ')
-                        print(parts)
+                        #print(parts)
                         if len(parts) >= 2 and parts[0] == "Temperature:":
                             # Convert the temperature part to float
                             temp_str = parts[1].replace('C', '')  # Remove the 'C' at the end
@@ -47,7 +47,7 @@ def monitor_temperature():
                             # Check if the duration has passed
                             if time.time() >= timer_end_time:
                                 print("ALERT: Temperature too high for too long!")
-                                ser.write(b'B')
+                                ser.write(b'timer on')
                                 # Reset the timer or take necessary actions
                                 reset_timer()
                                 # Send alert to dashboard 
@@ -89,6 +89,10 @@ def process_sensor_data():
     monitor_temperature()
 
     # Add other handling
+
+def turn_off_alarm():
+    ser.write(b'timer off')
+    
 
 def check_for_dashboard_alerts():
     # This function checks for any commands from the dashboard, like changing the alert threshold

@@ -11,14 +11,14 @@ void loop() {
   Serial.print(temp);
   Serial.println("C");  //print the temperature status
   delay(1000);
-   
+  
   if (Serial.available() > 0) {
-    char incomingChar = Serial.read();
+    char incomingString = Serial.read();
     
-    if (incomingChar == 'A') {
-      Serial.println("Command A received");
-    } else if (incomingChar == 'B') {
-      Serial.println("Command B received");
+    if (incomingString == 'timer off') {
+      Serial.println("Command off received");
+    } else if (incomingString == 'timer on') {
+      Serial.println("Command timer on received");
 	    int pitch = map(160,0,200, 50, 4000);
 	    tone(8,pitch,20);
     }
