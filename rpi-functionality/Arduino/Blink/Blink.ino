@@ -13,7 +13,7 @@ void loop() {
   delay(1000);
   
   if (Serial.available() > 0) {
-    print("incoming information")
+    //print("incoming information")
     String incomingString = Serial.readString();
     //print(incomingString)
     //char incomingChar = Serial.read();
