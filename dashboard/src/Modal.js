@@ -10,9 +10,9 @@ const Status = {
 const Modal = ({ isOpen, onClose, appliance, adjustTimerEndpoint, temperature, RPi_URL, status }) => {
 
     const backgroundColorClasses = {
-        [Status.OK]: "bg-lime-300 hover:bg-lime-200 text-gray-800",
-        [Status.WARNING]: "bg-amber-300 hover:bg-amber-200 text-gray-800",
-        [Status.PROBLEM]: "bg-orange-600 hover:bg-orange-500 text-gray-100",
+        [Status.OK]: "bg-lime-300 text-gray-800",
+        [Status.WARNING]: "bg-amber-300 text-gray-800",
+        [Status.PROBLEM]: "bg-orange-600 text-gray-100",
     };
 
     const [newTimerDuration, setNewTimerDuration] = useState('');
