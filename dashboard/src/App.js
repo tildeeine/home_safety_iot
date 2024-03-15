@@ -115,7 +115,7 @@ function App() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           appliance={selectedAppliance}
-          adjustTimerEndpoint={`${RPi_URL}/adjust_timer`}
+          adjustTimerEndpoint={`${RPi_URL}/alert_time`}
           temperature={temperature}
           RPi_URL={RPi_URL}
           status={status}
