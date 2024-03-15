@@ -21,13 +21,18 @@ const Status = {
   PROBLEM: 'Problem'
 };
 
+const alarmCount = 0;
+
 function App() {
   // State hooks
-  const [temperature, setTemperature] = useState(0);
+  const [appliances, setAppliances] = useState({
+    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner },
+    Door: { status: Status.OK, icon: faFireBurner }, // Example of other appliance
+    // Add other appliances as needed
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppliance, setSelectedAppliance] = useState(null);
   const [status, setStatus] = useState(Status.OK);
-  const [alarmCount, setAlarmCount] = useState(0);
   const [imageUrl, setImageUrl] = useState('');
 
   // Handle card click events
@@ -36,13 +41,27 @@ function App() {
     setIsModalOpen(true);
   };
 
-  // Fetch temperature and alarm count from the server
+  // Fetch data from server and update the relevant appliances
   const fetchData = async () => {
     try {
-      const tempResponse = await axios.get(RPI_URL + '/temperature');
-      const alertResponse = await axios.get(RPI_URL + '/temp_alert_status');
-      setTemperature(tempResponse.data.temperature);
-      setAlarmCount(alertResponse.data.alert);
+      const responses = await Promise.all([
+        axios.get(`${RPI_URL}/temperature`),
+        axios.get(`${RPI_URL}/temp_alert_status`),
+        // Add other endpoints as needed for different appliances
+      ]);
+      const tempResponse = responses[0];
+      const alertResponse = responses[1];
+
+      // Update only the oven's temperature and status
+      setAppliances(prev => ({
+        ...prev,
+        Oven: {
+          ...prev.Oven,
+          temperature: tempResponse.data.temperature,
+          status: alertResponse.data.alert >= 2 ? Status.PROBLEM : alertResponse.data.alert === 1 ? Status.WARNING : Status.OK
+        },
+        // Update other appliances here if needed
+      }));
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -69,8 +88,7 @@ function App() {
     };
 
     setStatus(determineStatus(alarmCount));
-  }, [alarmCount]);
-
+  }, []);
 
   // Poll for data periodically
   useEffect(() => {
@@ -85,45 +103,25 @@ function App() {
       <Sidebar />
       <div className='absolute inset-0 z-10 w-screen h-full xl:p-32 xl:pr-48 xl:pl-96 md:p-18 md:pl-52 p-10 h-auto flex flex-row flex-wrap justify-evenly bg-gray-800'>
         {/* <img src={imageUrl} alt="Latest from Nicla Vision" /> */}
-        <StatusCard
-          appliance="Oven"
-          icon={faFireBurner}
-          status={status}
-          temperature={temperature}
-          onClick={() => handleCardClick("Oven")}
-        />
-        <StatusCard
-          appliance="Door"
-          icon={faFireBurner}
-          status={status}
-          temperature={temperature}
-          onClick={() => handleCardClick("Door")}
+        {Object.entries(appliances).map(([name, { icon, status, temperature }]) => (
+          <StatusCard
+            key={name}
+            appliance={name}
+            icon={icon}
+            status={status}
+            temperature={name === "Oven" ? temperature : undefined}
+            onClick={() => handleCardClick(name)}
+          />
 
-        />
-        <StatusCard
-          appliance="oven"
-          icon={faFireBurner}
-          status={status}
-          temperature={temperature}
-          onClick={() => handleCardClick("oven")}
-
-        />
-        <StatusCard
-          appliance="oven"
-          icon={faFireBurner}
-          status={status}
-          temperature={temperature}
-          onClick={() => handleCardClick("oven")}
-
-        />
+        ))}
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           appliance={selectedAppliance}
           adjustTimerEndpoint={`${RPI_URL}/alert_time`}
-          temperature={temperature}
+          temperature={appliances[selectedAppliance]?.temperature}
           RPI_URL={RPI_URL}
-          status={status}
+          status={appliances[selectedAppliance]?.status}
         />
       </div>
     </div >
