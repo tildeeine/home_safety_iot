@@ -46,7 +46,7 @@ def monitor_temperature():
                             # Check if the duration has passed
                             if time.time() >= timer_end_time:
                                 print("ALERT: Temperature too high for too long!")
-                                ser.write('B')
+                                ser.write(b'B')
                                 # Reset the timer or take necessary actions
                                 reset_timer()
                                 # Send alert to dashboard 
