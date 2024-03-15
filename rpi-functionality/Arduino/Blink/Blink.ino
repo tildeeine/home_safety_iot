@@ -13,7 +13,7 @@ void loop() {
   delay(1000);
   
   if (Serial.available() > 0) {
-    string incomingString = Serial.read();
+    String incomingString = Serial.readString();
     
     if (incomingString == 'timer off') {
       Serial.println("Command off received");
