@@ -51,7 +51,7 @@ def alert_time():
     else:
         return jsonify({"duration": default_timer_duration // 60}), 200 
     
-@app.route('/alert_statuses/<appliance>', methods=['GET'])
+@app.route('/alert_status/oven', methods=['GET'])
 def get_alert_status(appliance):
     """Endpoint to get the current temperature alert status."""
     return jsonify({"alert": alert_status})
