@@ -24,6 +24,8 @@ const Modal = ({
 
     const [newTimerDuration, setNewTimerDuration] = useState('');
     const [currentAlertTime, setCurrentAlertTime] = useState('');
+    const [updateSuccess, setUpdateSuccess] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
 
     // Fetch current alert time when the modal opens
     useEffect(() => {
@@ -45,15 +47,23 @@ const Modal = ({
     // Handle timer adjustment form submission
     const handleTimerAdjustment = async (event) => {
         event.preventDefault();
-        if (applianceInfo.type === 'Oven') {
-            try {
-                // Convert minutes to seconds for the backend, only for the Oven
-                const durationInSeconds = parseInt(newTimerDuration, 10) * 60;
-                await axios.post(`${RPi_URL}/adjust_timer`, { duration: durationInSeconds });
-                onClose(); // Close the modal upon successful submission
-            } catch (error) {
-                console.error('Failed to adjust timer:', error);
-            }
+        try {
+            const durationInSeconds = parseInt(newTimerDuration, 10) * 60;
+            await axios.post(`${RPi_URL}/adjust_timer`, { duration: durationInSeconds });
+
+            setUpdateSuccess(true); // Indicate success
+            setErrorMessage(''); // Clear any previous error message
+            setTimeout(() => {
+                setUpdateSuccess(null); // Reset to hide the message
+            }, 3000); // Hide success message after 3 seconds
+        } catch (error) {
+            console.error('Failed to adjust timer:', error);
+            setUpdateSuccess(false); // Indicate failure
+            setErrorMessage('Failed to adjust timer. Please try again.'); // Set an appropriate error message
+            setTimeout(() => {
+                setErrorMessage(''); // Clear the error message
+                setUpdateSuccess(null); // Reset updateSuccess to hide any message
+            }, 3000); // Hide error message after 3 seconds
         }
     };
 
@@ -80,6 +90,12 @@ const Modal = ({
                                 required
                             />
                             <button type="submit" className="mt-4 p-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700">Update Timer</button>
+                            {updateSuccess && (
+                                <p className="text-green-500">Alert timer updated successfully!</p>
+                            )}
+                            {updateSuccess === false && errorMessage && (
+                                <p className="text-red-500">{errorMessage}</p>
+                            )}
                         </form>
                     </>
                 );
@@ -90,6 +106,24 @@ const Modal = ({
                         <h2 className="mb-6 mt-6 text-3xl font-bold">{applianceInfo.type}</h2>
                         <p>Status: {applianceInfo.isOpen ? 'Open' : 'Closed'}</p>
                         <p>Last Opened: {applianceInfo.lastOpened}</p>
+                        <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
+                            <label htmlFor="timerDuration" className="mb-2">Set New Alert Time (minutes):</label>
+                            <input
+                                id="timerDuration"
+                                type="number"
+                                value={newTimerDuration}
+                                className="mt-4 mb-4 p-2 w-3/4 border-2 border-gray-200 rounded"
+                                onChange={(e) => setNewTimerDuration(e.target.value)}
+                                required
+                            />
+                            <button type="submit" className="mt-4 p-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700">Update Timer</button>
+                            {updateSuccess && (
+                                <p className="text-green-500">Alert timer updated successfully!</p>
+                            )}
+                            {updateSuccess === false && errorMessage && (
+                                <p className="text-red-500">{errorMessage}</p>
+                            )}
+                        </form>
                     </>
                 );
             default:
