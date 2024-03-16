@@ -23,7 +23,6 @@ alert_status = 0
 
 @app.route('/temperature', methods=['GET', 'POST'])
 def temperature():
-    print("Alerts: ", alert_status)
     """Endpoint to get or update the latest temperature reading."""
     global latest_temp
     if request.method == 'POST':
@@ -54,6 +53,8 @@ def alert_time():
     
 @app.route('/alert_status/oven', methods=['GET'])
 def get_alert_status():
+    print("Alerts: ", alert_status)
+
     global alert_status
     """Endpoint to get the current temperature alert status."""
     return jsonify({"alert": alert_status})
