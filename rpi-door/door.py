@@ -23,6 +23,7 @@ def door_monitor():
     while True:
         door_status = "open" if not button.is_pressed else "closed"
         current_time = time.time()
+        print(timer_end_time, current_time)
         if door_status == "open" and current_time >= timer_end_time:
             alert_status += 1  # Alert triggered
             print("Alert") #!
