@@ -53,9 +53,9 @@ def alert_time():
     
 @app.route('/alert_status/oven', methods=['GET'])
 def get_alert_status():
+    global alert_status
     print("Alerts: ", alert_status)
 
-    global alert_status
     """Endpoint to get the current temperature alert status."""
     return jsonify({"alert": alert_status})
 
