@@ -9,9 +9,14 @@ import { faFireBurner, faDoorClosed, faDoorOpen } from '@fortawesome/free-solid-
 
 
 // Constants for API URLs
-const RPI_IP = "172.20.10.14";
-const RPI_PORT = "5000";
-const RPI_URL = `http://${RPI_IP}:${RPI_PORT}`;
+const RPI_SENSOR_IP = "172.20.10.14";
+const RPI_SENSOR_PORT = "5000";
+const RPI_SENSOR_URL = `http://${RPI_SENSOR_IP}:${RPI_SENSOR_PORT}`;
+
+const RPI_DOOR_IP = "172.20.10.2"
+const RPI_DOOR_PORT = "5000";
+const RPI_DOOR_URL = `http://${RPI_DOOR_IP}:${RPI_DOOR_PORT}`;
+
 
 const NICLA_VISION_IP = "172.20.10.14";
 const NICLA_VISION_PORT = "8000";
@@ -52,11 +57,11 @@ function App() {
   const fetchData = async () => {
     try {
       const responses = await Promise.all([
-        axios.get(`${RPI_URL}/temperature`),
-        axios.get(`${RPI_URL}/alert_status/oven`),
-        axios.get(`${RPI_URL}/alert_status/door`),
-        axios.get(`${RPI_URL}/door_open_status`),
-        axios.get(`${RPI_URL}/door_last_opened`),
+        axios.get(`${RPI_SENSOR_URL}/temperature`),
+        axios.get(`${RPI_SENSOR_URL}/alert_status/oven`),
+        axios.get(`${RPI_DOOR_URL}/alert_status/door`),
+        axios.get(`${RPI_DOOR_URL}/door_last_opened`),
+        axios.get(`${RPI_DOOR_URL}/alert_time/door`),
         // Add other endpoints as needed for different appliances
       ]);
       const tempResponse = responses[0];
@@ -156,7 +161,7 @@ function App() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             applianceInfo={selectedAppliance}
-            RPI_URL={RPI_URL}
+            RPI_SENSOR_URL={RPI_SENSOR_URL}
           />
         </div>
       </div>

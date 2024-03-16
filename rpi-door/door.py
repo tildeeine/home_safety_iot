@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from gpiozero import Button
 from signal import SIGTERM, signal
 import threading
 import time
 
 app = Flask(__name__)
+CORS(app)
 
 # GPIO setup
 input_pin = 18
