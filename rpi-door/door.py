@@ -20,6 +20,7 @@ def door_monitor():
     global door_status
     while True:
         door_status = "open" if not button.is_pressed else "closed"
+        print(f"Door status: {door_status}")
         time.sleep(1)  # Check every second
 
 @app.route('/alert_time/door', methods=['GET', 'POST'])
