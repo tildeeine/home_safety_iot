@@ -14,44 +14,52 @@ button = Button(input_pin, pull_up=True)
 
 # Initialize global variables for the door status and alert timer
 door_status = "closed"  # Default status
-default_door_timer_duration = 4  # 4 sec, test value
-timer_end_time = time.time() + default_door_timer_duration
+default_timer_duration = 4  # 4 sec, test value
+timer_end_time = time.time() + default_timer_duration
 alert_status = 0
 
 def door_monitor():
     global door_status
     while True:
         door_status = "open" if not button.is_pressed else "closed"
+        current_time = time.time()
+        if door_status == "open" and current_time >= timer_end_time:
+            alert_status += 1  # Alert triggered
+            print("Alert") #!
+        else:
+            alert_status = 0  # No alert
+            reset_timer()
         print(f"Door status: {door_status}")
         time.sleep(1)  # Check every second
 
+def reset_timer():
+    """Function to reset the alert timer."""
+    global timer_end_time, default_timer_duration
+    timer_end_time = time.time() + default_timer_duration
+
 @app.route('/alert_time/door', methods=['GET', 'POST'])
 def door_alert_time():
-    global default_door_timer_duration, timer_end_time
+    global default_timer_duration, timer_end_time
     if request.method == 'POST':
         data = request.json
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
-                default_door_timer_duration = new_duration * 60
-                timer_end_time = time.time() + default_door_timer_duration
+                default_timer_duration = new_duration * 60
+                timer_end_time = time.time() + default_timer_duration
                 return jsonify({"message": "Door alert time updated successfully", "duration": new_duration}), 200
             else:
                 return jsonify({"message": "Invalid duration provided"}), 400
         except (ValueError, KeyError, TypeError):
             return jsonify({"message": "Error processing request"}), 400
     else:
-        return jsonify({"duration": default_door_timer_duration // 60}), 200
+        return jsonify({"duration": default_timer_duration // 60}), 200
 
 @app.route('/alert_status/door', methods=['GET'])
 def door_alert_status():
+    """Endpoint to get the current number of door alerts."""
     global alert_status
-    # Example logic to determine alert status based on door status and timer
-    current_time = time.time()
-    if door_status == "open" and current_time >= timer_end_time:
-        alert_status += 1  # Alert triggered
-    else:
-        alert_status = 0  # No alert
+
     return jsonify({"alert": alert_status})
 
 
