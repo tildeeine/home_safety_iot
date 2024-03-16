@@ -74,10 +74,10 @@ def monitor_temperature():
                         print("ALERT: Temperature too high for too long!")
                         alert_status += 1
                         ser.write(b'B')  # Example action
-                        reset_timer('oven')
+                        reset_timer()
                     elif temp <= temp_threshold:
                         alert_status = 0
-                        reset_timer('oven')
+                        reset_timer()
             except ValueError:
                 print(f"Error converting temperature value: {line}")
         time.sleep(1)
