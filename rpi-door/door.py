@@ -49,7 +49,7 @@ def door_alert_status():
     # Example logic to determine alert status based on door status and timer
     current_time = time.time()
     if door_status == "open" and current_time >= timer_end_time:
-        alert_status = 1  # Alert triggered
+        alert_status += 1  # Alert triggered
     else:
         alert_status = 0  # No alert
     return jsonify({"alert": alert_status})

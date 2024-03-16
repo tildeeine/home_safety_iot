@@ -75,7 +75,6 @@ def monitor_temperature():
                         print("ALERT: Temperature too high for too long!")
                         alert_status += 1
                         ser.write(b'B')  # Example action
-                        reset_timer()
                     elif temp <= temp_threshold:
                         alert_status = 0
                         reset_timer()
@@ -95,5 +94,5 @@ def start_sensor_processing():
 if __name__ == '__main__':
     sensor_thread = Thread(target=start_sensor_processing, daemon=True)
     sensor_thread.start()
-    
+
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)

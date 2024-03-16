@@ -28,13 +28,11 @@ const Status = {
   PROBLEM: 'Problem'
 };
 
-const alarmCount = 0;
-
 function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
-    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven' },
-    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door' }, // Example of other appliance
+    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_SENSOR_URL },
+    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door', url: RPI_DOOR_URL }, // Example of other appliance
     // Add other appliances as needed
   });
   const [doorStatus, setDoorStatus] = useState({
@@ -43,7 +41,6 @@ function App() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppliance, setSelectedAppliance] = useState(null);
-  const [status, setStatus] = useState(Status.OK);
   const [imageUrl, setImageUrl] = useState('');
 
   // Handle card click events
@@ -70,26 +67,31 @@ function App() {
       const lastOpened = responses[3];
       const doorAlert = responses[4];
 
+      const determineStatus = (count) => {
+        if (count >= 2) return Status.PROBLEM;
+        if (count === 1) return Status.WARNING;
+        return Status.OK;
+      };
+
       // Update only inputs and status'
       setAppliances(prevAppliances => ({
         ...prevAppliances,
         Oven: {
           ...prevAppliances.Oven,
           temperature: tempResponse.data.temperature, // Assuming tempResponse.data contains the temperature
-          status: ovenAlert.data.alert, // Assuming ovenAlert.data contains the alert status
+          status: determineStatus(ovenAlert.data.alert), // Assuming ovenAlert.data contains the alert status
         },
         Door: {
           ...prevAppliances.Door,
           isOpen: doorOpenStatus.data.isOpen, // Assuming doorOpenStatus.data contains the open status
           lastOpened: lastOpened.data.lastOpened, // Assuming lastOpened.data contains the last opened time
-          status: doorAlert.data.alert, // Assuming doorAlert.data contains the alert status for the door
+          status: determineStatus(doorAlert.data.alert), // Assuming doorAlert.data contains the alert status for the door
         }
       }));
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
-
 
   // Fetch the latest image from camera
   useEffect(() => {
@@ -103,24 +105,12 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Update status based on alarm count
-  useEffect(() => {
-    const determineStatus = (count) => {
-      if (count >= 2) return Status.PROBLEM;
-      if (count === 1) return Status.WARNING;
-      return Status.OK;
-    };
-
-    setStatus(determineStatus(alarmCount));
-  }, []);
-
   // Poll for data periodically
   useEffect(() => {
-    console.log("Fetching data. Status:", status);
     fetchData();
     const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
-  }, [status]); // Rerun when status changes
+  }, []); // Rerun when status changes
 
   return (
     <div className="relative flex flex-row min-h-screen">
@@ -161,7 +151,7 @@ function App() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             applianceInfo={selectedAppliance}
-            RPI_SENSOR_URL={RPI_SENSOR_URL}
+            url={selectedAppliance?.url}
           />
         </div>
       </div>
