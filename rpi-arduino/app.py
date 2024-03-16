@@ -23,8 +23,8 @@ alert_status = 0
 
 @app.route('/temperature', methods=['GET', 'POST'])
 def temperature():
+    print("Alerts: ", alert_status)
     """Endpoint to get or update the latest temperature reading."""
-    print("Temperature called")
     global latest_temp
     if request.method == 'POST':
         data = request.json
