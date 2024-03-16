@@ -53,10 +53,10 @@ function App() {
     try {
       const responses = await Promise.all([
         axios.get(`${RPI_URL}/temperature`),
-        axios.get(`${RPI_URL}/temp_alert_status`),
+        axios.get(`${RPI_URL}/alert_status/oven`),
+        axios.get(`${RPI_URL}/alert_status/door`),
         axios.get(`${RPI_URL}/door_open_status`),
         axios.get(`${RPI_URL}/door_last_opened`),
-        axios.get(`${RPI_URL}/door_alert_Status`),
         // Add other endpoints as needed for different appliances
       ]);
       const tempResponse = responses[0];
@@ -68,9 +68,17 @@ function App() {
       // Update only inputs and status'
       setAppliances(prevAppliances => ({
         ...prevAppliances,
-        Oven: { ...prevAppliances.Oven, temperature: tempResponse, status: ovenAlert },
-        Door: { ...prevAppliances.Door, isOpen: doorOpenStatus, lastOpened: lastOpened, status: doorAlert },
-        // Update other appliances similarly
+        Oven: {
+          ...prevAppliances.Oven,
+          temperature: tempResponse.data.temperature, // Assuming tempResponse.data contains the temperature
+          status: ovenAlert.data.alert, // Assuming ovenAlert.data contains the alert status
+        },
+        Door: {
+          ...prevAppliances.Door,
+          isOpen: doorOpenStatus.data.isOpen, // Assuming doorOpenStatus.data contains the open status
+          lastOpened: lastOpened.data.lastOpened, // Assuming lastOpened.data contains the last opened time
+          status: doorAlert.data.alert, // Assuming doorAlert.data contains the alert status for the door
+        }
       }));
     } catch (error) {
       console.error('Error fetching data:', error);

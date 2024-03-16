@@ -49,7 +49,7 @@ const Modal = ({
         event.preventDefault();
         try {
             const durationInSeconds = parseInt(newTimerDuration, 10) * 60;
-            await axios.post(`${RPi_URL}/adjust_timer`, { duration: durationInSeconds });
+            await axios.post(`${RPi_URL}/alert_time/${applianceInfo.type}`, { duration: durationInSeconds });
 
             setUpdateSuccess(true); // Indicate success
             setErrorMessage(''); // Clear any previous error message
@@ -85,7 +85,7 @@ const Modal = ({
                                 id="timerDuration"
                                 type="number"
                                 value={newTimerDuration}
-                                className="mt-4 mb-4 p-2 w-3/4 border-2 border-gray-200 rounded"
+                                className="mt-4 mb-4 p-2 w-1/5 border-2 border-gray-200 rounded"
                                 onChange={(e) => setNewTimerDuration(e.target.value)}
                                 required
                             />
@@ -112,7 +112,7 @@ const Modal = ({
                                 id="timerDuration"
                                 type="number"
                                 value={newTimerDuration}
-                                className="mt-4 mb-4 p-2 w-3/4 border-2 border-gray-200 rounded"
+                                className="mt-4 mb-4 p-2 w-1/5 border-2 border-gray-200 rounded"
                                 onChange={(e) => setNewTimerDuration(e.target.value)}
                                 required
                             />
