@@ -19,7 +19,7 @@ timer_end_time = time.time() + default_timer_duration
 alert_status = 0
 
 def door_monitor():
-    global door_status
+    global door_status, alert_status, timer_end_time
     while True:
         door_status = "open" if not button.is_pressed else "closed"
         if door_status == "open" and time.time() >= timer_end_time:
