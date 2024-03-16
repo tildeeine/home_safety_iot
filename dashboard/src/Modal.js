@@ -19,7 +19,7 @@ const Modal = ({
     isOpen,
     onClose,
     applianceInfo, // Changed to a more generic prop to handle different appliance info
-    RPi_URL,
+    url
 }) => {
 
     const [newTimerDuration, setNewTimerDuration] = useState('');
@@ -33,7 +33,7 @@ const Modal = ({
             // Fetch current alert time only for the Oven
             const fetchAlertTime = async () => {
                 try {
-                    const response = await axios.get(`${RPi_URL}/alert_time`);
+                    const response = await axios.get(`${url}/alert_time`);
                     setCurrentAlertTime(response.data.duration);
                     setNewTimerDuration(response.data.duration); // Prefill the form with the current alert time for the oven
                 } catch (error) {
@@ -42,14 +42,14 @@ const Modal = ({
             };
             fetchAlertTime();
         }
-    }, [isOpen, RPi_URL, applianceInfo]);
+    }, [isOpen, url, applianceInfo]);
 
     // Handle timer adjustment form submission
     const handleTimerAdjustment = async (event) => {
         event.preventDefault();
         try {
             const durationInSeconds = parseInt(newTimerDuration, 10) * 60;
-            await axios.post(`${RPi_URL}/alert_time/${applianceInfo.type}`, { duration: durationInSeconds });
+            await axios.post(`${url}/alert_time/${applianceInfo.type}`, { duration: durationInSeconds });
 
             setUpdateSuccess(true); // Indicate success
             setErrorMessage(''); // Clear any previous error message

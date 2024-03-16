@@ -9,9 +9,14 @@ import { faFireBurner, faDoorClosed, faDoorOpen } from '@fortawesome/free-solid-
 
 
 // Constants for API URLs
-const RPI_IP = "172.20.10.14";
-const RPI_PORT = "5000";
-const RPI_URL = `http://${RPI_IP}:${RPI_PORT}`;
+const RPI_SENSOR_IP = "172.20.10.14";
+const RPI_SENSOR_PORT = "5000";
+const RPI_SENSOR_URL = `http://${RPI_SENSOR_IP}:${RPI_SENSOR_PORT}`;
+
+const RPI_DOOR_IP = "172.20.10.2"
+const RPI_DOOR_PORT = "5000";
+const RPI_DOOR_URL = `http://${RPI_DOOR_IP}:${RPI_DOOR_PORT}`;
+
 
 const NICLA_VISION_IP = "172.20.10.14";
 const NICLA_VISION_PORT = "8000";
@@ -23,13 +28,11 @@ const Status = {
   PROBLEM: 'Problem'
 };
 
-const alarmCount = 0;
-
 function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
-    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven' },
-    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door' }, // Example of other appliance
+    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_SENSOR_URL },
+    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door', url: RPI_DOOR_URL }, // Example of other appliance
     // Add other appliances as needed
   });
   const [doorStatus, setDoorStatus] = useState({
@@ -38,7 +41,6 @@ function App() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppliance, setSelectedAppliance] = useState(null);
-  const [status, setStatus] = useState(Status.OK);
   const [imageUrl, setImageUrl] = useState('');
 
   // Handle card click events
@@ -52,18 +54,24 @@ function App() {
   const fetchData = async () => {
     try {
       const responses = await Promise.all([
-        axios.get(`${RPI_URL}/temperature`),
-        axios.get(`${RPI_URL}/alert_status/oven`),
-        axios.get(`${RPI_URL}/alert_status/door`),
-        axios.get(`${RPI_URL}/door_open_status`),
-        axios.get(`${RPI_URL}/door_last_opened`),
+        axios.get(`${RPI_SENSOR_URL}/temperature`),
+        axios.get(`${RPI_SENSOR_URL}/alert_status/oven`),
+        axios.get(`${RPI_DOOR_URL}/alert_status/door`),
+        axios.get(`${RPI_DOOR_URL}/door_last_opened`),
+        axios.get(`${RPI_DOOR_URL}/alert_time/door`),
         // Add other endpoints as needed for different appliances
       ]);
       const tempResponse = responses[0];
       const ovenAlert = responses[1];
       const doorOpenStatus = responses[2];
       const lastOpened = responses[3];
-      const doorAlert = responses[4];
+      const doorTimer = responses[4];
+
+      const determineStatus = (count) => {
+        if (count >= 2) return Status.PROBLEM;
+        if (count === 1) return Status.WARNING;
+        return Status.OK;
+      };
 
       // Update only inputs and status'
       setAppliances(prevAppliances => ({
@@ -71,13 +79,13 @@ function App() {
         Oven: {
           ...prevAppliances.Oven,
           temperature: tempResponse.data.temperature, // Assuming tempResponse.data contains the temperature
-          status: ovenAlert.data.alert, // Assuming ovenAlert.data contains the alert status
+          status: determineStatus(ovenAlert.data.alert), // Assuming ovenAlert.data contains the alert status
         },
         Door: {
           ...prevAppliances.Door,
           isOpen: doorOpenStatus.data.isOpen, // Assuming doorOpenStatus.data contains the open status
           lastOpened: lastOpened.data.lastOpened, // Assuming lastOpened.data contains the last opened time
-          status: doorAlert.data.alert, // Assuming doorAlert.data contains the alert status for the door
+          status: determineStatus(doorOpenStatus.data.alert), // Assuming doorAlert.data contains the alert status for the door
         }
       }));
     } catch (error) {
@@ -97,24 +105,12 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // Update status based on alarm count
-  useEffect(() => {
-    const determineStatus = (count) => {
-      if (count >= 2) return Status.PROBLEM;
-      if (count === 1) return Status.WARNING;
-      return Status.OK;
-    };
-
-    setStatus(determineStatus(alarmCount));
-  }, []);
-
   // Poll for data periodically
   useEffect(() => {
-    console.log("Fetching data. Status:", status);
     fetchData();
     const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
-  }, [status]); // Rerun when status changes
+  }, []); // Rerun when status changes
 
   return (
     <div className="relative flex flex-row min-h-screen">
@@ -155,7 +151,7 @@ function App() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             applianceInfo={selectedAppliance}
-            RPI_URL={RPI_URL}
+            url={selectedAppliance?.url}
           />
         </div>
       </div>

@@ -52,13 +52,16 @@ def alert_time():
         return jsonify({"duration": default_timer_duration // 60}), 200 
     
 @app.route('/alert_status/oven', methods=['GET'])
-def get_alert_status(appliance):
+def get_alert_status():
+    global alert_status
+    print("Alerts: ", alert_status)
+
     """Endpoint to get the current temperature alert status."""
     return jsonify({"alert": alert_status})
 
 def monitor_temperature():
     """Function to continuously monitor the temperature from the Arduino."""
-    global latest_temp, timer_end_times
+    global latest_temp, alert_status
     while True:
         if ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
@@ -73,21 +76,24 @@ def monitor_temperature():
                         print("ALERT: Temperature too high for too long!")
                         alert_status += 1
                         ser.write(b'B')  # Example action
-                        reset_timer('oven')
                     elif temp <= temp_threshold:
                         alert_status = 0
-                        reset_timer('oven')
+                        reset_timer()
             except ValueError:
                 print(f"Error converting temperature value: {line}")
         time.sleep(1)
 
 def reset_timer():
     """Function to reset the alert timer."""
-    global timer_end_time
+    global timer_end_time, default_timer_duration
     timer_end_time = time.time() + default_timer_duration
 
+def start_sensor_processing():
+    """Wrapper function to start sensor processing in a thread."""
+    monitor_temperature()
+
 if __name__ == '__main__':
-    sensor_thread = Thread(target=monitor_temperature(), daemon=True)
+    sensor_thread = Thread(target=start_sensor_processing, daemon=True)
     sensor_thread.start()
 
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
