@@ -52,6 +52,12 @@ def door_alert_status():
         alert_status = 0  # No alert
     return jsonify({"alert": alert_status})
 
+
+@app.route('/door_last_opened', methods=['GET'])
+def door_last_opened():
+    global timer_end_time
+    return jsonify({"last_opened": timer_end_time})#!wrong, just for testing
+
 def start_flask_app():
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
 

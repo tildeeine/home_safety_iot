@@ -54,15 +54,13 @@ function App() {
       const responses = await Promise.all([
         axios.get(`${RPI_URL}/temperature`),
         axios.get(`${RPI_URL}/alert_status/oven`),
-        axios.get(`${RPI_URL}/alert_time/oven`),
-        // axios.get(`${RPI_URL}/alert_status/door`),
-        // axios.get(`${RPI_URL}/door_open_status`),
-        // axios.get(`${RPI_URL}/door_last_opened`),
+        axios.get(`${RPI_URL}/alert_status/door`),
+        axios.get(`${RPI_URL}/door_open_status`),
+        axios.get(`${RPI_URL}/door_last_opened`),
         // Add other endpoints as needed for different appliances
       ]);
       const tempResponse = responses[0];
       const ovenAlert = responses[1];
-      const ovenAlertTime = responses[2];
       const doorOpenStatus = responses[2];
       const lastOpened = responses[3];
       const doorAlert = responses[4];
@@ -86,6 +84,7 @@ function App() {
       console.error('Error fetching data:', error);
     }
   };
+
 
   // Fetch the latest image from camera
   useEffect(() => {

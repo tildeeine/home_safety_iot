@@ -88,8 +88,12 @@ def reset_timer():
     global timer_end_time, default_timer_duration
     timer_end_time = time.time() + default_timer_duration
 
-if __name__ == '__main__':
-    sensor_thread = Thread(target=monitor_temperature(), daemon=True)
-    sensor_thread.start()
+def start_sensor_processing():
+    """Wrapper function to start sensor processing in a thread."""
+    monitor_temperature()
 
+if __name__ == '__main__':
+    sensor_thread = Thread(target=start_sensor_processing, daemon=True)
+    sensor_thread.start()
+    
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
