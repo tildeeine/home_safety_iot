@@ -24,7 +24,7 @@ def door_monitor():
         door_status = "open" if not button.is_pressed else "closed"
         if door_status == "open" and time.time() >= timer_end_time:
             alert_status += 1  # Alert triggered
-            print("Alert") #!
+            print("Alert", alert_status) #!
         elif door_status == "closed":
             alert_status = 0  # No alert
             reset_timer()
@@ -38,6 +38,7 @@ def reset_timer():
 
 @app.route('/alert_time/door', methods=['GET', 'POST'])
 def door_alert_time():
+    """Endpoint to get or update the alert timer duration."""
     global default_timer_duration, timer_end_time
     if request.method == 'POST':
         data = request.json

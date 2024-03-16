@@ -65,7 +65,7 @@ function App() {
       const ovenAlert = responses[1];
       const doorOpenStatus = responses[2];
       const lastOpened = responses[3];
-      const doorAlert = responses[4];
+      const doorTimer = responses[4];
 
       const determineStatus = (count) => {
         if (count >= 2) return Status.PROBLEM;
@@ -85,7 +85,7 @@ function App() {
           ...prevAppliances.Door,
           isOpen: doorOpenStatus.data.isOpen, // Assuming doorOpenStatus.data contains the open status
           lastOpened: lastOpened.data.lastOpened, // Assuming lastOpened.data contains the last opened time
-          status: determineStatus(doorAlert.data.alert), // Assuming doorAlert.data contains the alert status for the door
+          status: determineStatus(doorOpenStatus.data.alert), // Assuming doorAlert.data contains the alert status for the door
         }
       }));
     } catch (error) {

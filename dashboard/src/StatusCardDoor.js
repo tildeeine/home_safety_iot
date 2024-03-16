@@ -16,8 +16,8 @@ const backgroundColorClasses = {
 const StatusCardDoor = ({ isOpen, lastOpened, appliance, onClick, status }) => {
     const statusMessage = {
         [Status.OK]: `The ${appliance} is closed.`,
-        [Status.WARNING]: `Warning: The ${appliance} door has been open for a while!`,
-        [Status.PROBLEM]: `Problem: The ${appliance} door has been open for too long!`,
+        [Status.WARNING]: `Warning: The ${appliance} has been open for a while!`,
+        [Status.PROBLEM]: `Problem: The ${appliance} has been open for too long!`,
     };
 
     // Determine icon and status message based on isOpen
