@@ -37,7 +37,8 @@ const Modal = ({
                     setCurrentAlertTime(response.data.duration);
                     setNewTimerDuration(response.data.duration); // Prefill the form with the current alert time for the oven
                 } catch (error) {
-                    console.error('Failed to fetch alert time:', error);
+                    console.log("no alert"); //! debugging
+                    // console.error('Failed to fetch alert time:', error);
                 }
             };
             fetchAlertTime();
