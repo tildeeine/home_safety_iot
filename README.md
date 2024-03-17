@@ -68,6 +68,7 @@ In this section include detailed instructions for installing additiona software 
 npm install --save @fortawesome/free-solid-svg-icons
 npm install --save @fortawesome/react-fontawesome
 npm install react
+source tutorial-env/bin/activate
 ```
 
 ### Installation
