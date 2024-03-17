@@ -6,13 +6,11 @@ import React, { useEffect, useState } from 'react';
 function Sidebar() {
     const NICLA_VISION_IP = "172.20.10.3";
     const NICLA_VISION_PORT = "8080";
-    // Removed timestamp query param from the base URL to simplify updates
     const NICLA_VISION_URL = `http://${NICLA_VISION_IP}:${NICLA_VISION_PORT}/capture?timestamp=`;
 
     const [sideOpen, setSideOpen] = useState("noShow");
     const [showModal, setShowModal] = useState(false);
     const [camera, setCamera] = useState({ image: '', name: '' });
-    const [imageTimestamp, setImageTimestamp] = useState(Date.now());
     const [imageLoaded, setImageLoaded] = useState(false);
     const [timestamp, setTimestamp] = useState('');
 
@@ -21,38 +19,30 @@ function Sidebar() {
     const openCam = (cam) => {
         const newTimestamp = Date.now();
         setCamera({ ...cam, image: `${NICLA_VISION_URL}${newTimestamp}` });
-        setTimestamp(new Date().toLocaleString());
-        setImageLoaded(true);
+        setTimestamp(new Date(newTimestamp).toLocaleString());
+        setImageLoaded(false);
         setShowModal(true);
     };
 
     useEffect(() => {
+        if (!showModal) return;
+
         const interval = setInterval(() => {
-            if (showModal) { // Only update if the modal is open
-                setImageTimestamp(Date.now());
-            }
+            const newTimestamp = Date.now();
+            setCamera((prevCamera) => ({
+                ...prevCamera,
+                image: `${NICLA_VISION_URL}${newTimestamp}`
+            }));
+            setImageLoaded(false); // Assume image is not loaded when URL changes
         }, 5000); // Poll for new images every 5 seconds
 
         return () => clearInterval(interval);
-    }, [showModal]);
-
-    useEffect(() => {
-        if (showModal) {
-            setCamera((prevCamera) => ({ ...prevCamera, image: `${NICLA_VISION_URL}${imageTimestamp}` }));
-        }
-    }, [imageTimestamp, showModal, NICLA_VISION_URL]);
-
-    useEffect(() => {
-        if (showModal) {
-            setCamera((prevCamera) => ({ ...prevCamera, image: `${NICLA_VISION_URL}${imageTimestamp}` }));
-            setImageLoaded(false); // Reset image loaded state to show the loading message
-        }
-    }, [imageTimestamp, showModal, NICLA_VISION_URL]);
+    }, [showModal, NICLA_VISION_URL]);
 
     // Function to handle image load
     const handleImageLoad = () => {
         setImageLoaded(true);
-        setImageTimestamp(new Date().toLocaleString()); // Update timestamp when the image actually loads
+        setTimestamp(new Date().toLocaleString()); // Update timestamp when the image actually loads
     };
 
     // Close modal if clicked outside
@@ -104,19 +94,31 @@ function Sidebar() {
                                 </button>
                             </div>
                             <div className="relative p-6 flex-auto flex justify-center items-center" style={{ minHeight: '250px' }}>
-                                {!imageLoaded ? (
-                                    <div className="text-center">
-                                        <p className="text-gray-600 text-lg">Getting image...</p>
-                                    </div>
-                                ) : (
-                                    <img src={camera.image} alt="Camera Feed" className="max-w-full max-h-full" onLoad={handleImageLoad} />
-                                )}
+                                <div className={`text-center ${imageLoaded ? 'hidden' : 'block'}`}>
+                                    <p className="text-gray-600 text-lg">Getting image...</p>
+                                </div>
+                                <img
+                                    src={camera.image}
+                                    alt="Camera Feed"
+                                    className={`max-w-full max-h-full ${!imageLoaded ? 'hidden' : 'block'}`}
+                                    onLoad={handleImageLoad}
+                                    style={{ display: imageLoaded ? 'block' : 'none' }} // Use CSS to control visibility
+                                />
                             </div>
-                            <div className="flex justify-center p-6 border-t border-solid border-gray-300 rounded-b">
-                                <p className="text-gray-600 text-lg">
-                                    Image taken at {timestamp}
-                                </p>
-                            </div>
+                            {imageLoaded ? (
+                                <div className="flex justify-center p-6 border-t border-solid border-gray-300 rounded-b">
+                                    <p className="text-gray-600 text-lg">
+                                        Image taken at {timestamp}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="flex justify-center p-6 border-t border-solid border-gray-300 rounded-b">
+                                    <p className="text-gray-600 text-lg">
+                                        No image taken.
+                                    </p>
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>
