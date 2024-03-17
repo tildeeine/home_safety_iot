@@ -1,9 +1,12 @@
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Sidebar() {
+
+    const url = "http://localhost:5000"; // Set correct url for getting video feed
 
     const [sideOpen, setSideOpen] = useState("noShow");
     const [showModal, setShowModal] = useState(false);
@@ -24,6 +27,21 @@ function Sidebar() {
         setCamera(cam);
         setShowModal(true);
     }
+
+    useEffect(() => {
+        const fetchAlertTime = async () => {
+            try {
+                const response = await axios.get(`${url}`);
+                console.log("Getting camera info. Response: ", response.data);
+
+            } catch (error) {
+                console.error('Failed to fetch alert time:', error);
+            }
+        };
+        fetchAlertTime();
+    }, [url]);
+
+
 
     return (
         <>

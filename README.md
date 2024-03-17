@@ -18,34 +18,32 @@ If you mention something, please provide links.
 ### Hardware
 
 * [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) - 1 unit - Development board for reading sensors and sending this information to our dashboard.
+* [Raspberry Pi 3](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/) - 1 unit - Development board for reading "door input", illustrated through an open/close circuit, and sending this information to our dashboard. 
 * [Arduino starter kit](https://store.arduino.cc/collections/kits/products/arduino-starter-kit-multi-language) - Includes a range of the components we used for development. More specifically, we used the following components from the starter kit:
     * Buzzer
+    * Temperature sensor
     * Arduino
-    * Breadboard
-    * f
+    * Breadboard, cables, jumper wire connectors
 * [Nicla Vision](https://store.arduino.cc/products/nicla-vision) - 1 unit - Used for visual monitoring of the stovetop
-* Magnetic door sensors - 1 unit - To monitor fridge and entrance/exit doors
+* Assorted cables:
+    * 2 RPi power cables
+    * 1 Arduino USB power connector
+    * 1 MicroUSB to USB for Nicla Vision
 
 ### Software
 
 * [Raspberry Pi OS](https://www.raspberrypi.com/software/) - Operating system
-* [Python]() - Programming language for RPi
-* [Java](https://openjdk.java.net/) - Programming Language and Platform
-* [Maven](https://maven.apache.org/) - Build Tool and Dependency Management
-* ...
+* [Python]() - Programming language for RPi and Nicla Vision
+* [Reference]() - Programming language for Arduino
+* [Flask]() - Web framework, used for building API
+* [React]() - Web framwork, used for building frontend
+* [Tailwindcss]() - CSS framework for simplifying design of frontend
 
-https://www.circuito.io/app?components=512,11021,333429
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on for testing purposes.  
 
-```sh
-npm install --save @fortawesome/free-solid-svg-icons
-npm install --save @fortawesome/react-fontawesome
-```
-
-Add code to the arduino: Connect to the RPi, 
 
 ### Assembly Instructions
 
@@ -53,12 +51,23 @@ Describe step-by-step assembly instructions.
 
 When necessary, and especially when wiring is involved, include diagrams/photos.
 
+Page for creating diagrams:
+https://www.circuito.io/app?components=512,11021,333429
+
 ### Software Prerequisites
 
-In this section include detailed instructions for installing additiona software the application is dependent upon (such as PostgreSQL database, for example).
+- OpenMV for programming nicla vision
+- Arduino IDE for programming arduino
+- Some IDE on your computer to program RPis
+- Libraries and dependencies
+    - flask
+- Node package manager
 
-```
-installation command
+In this section include detailed instructions for installing additiona software the application is dependent upon (such as PostgreSQL database, for example).
+```sh
+npm install --save @fortawesome/free-solid-svg-icons
+npm install --save @fortawesome/react-fontawesome
+npm install react
 ```
 
 ### Installation
@@ -96,41 +105,8 @@ Give an example command
 Give a tour of the best features of the application.
 Add screenshots when relevant.
 
-## Deployment
-
-Add additional notes about how to deploy this on a host or a cloud provider.
-
-Mention virtualization/container tools and commands.
-
-```
-Give an example command
-```
-
-Provide instructions for connecting to servers and tell clients how to obtain necessary permissions.
-
 ## Additional Information
 
 ### Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-### Versioning
-
-We use [SemVer](http://semver.org/) for versioning. 
-For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-### License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-### Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-### Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+Add our names here. 
