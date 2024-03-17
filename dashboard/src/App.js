@@ -17,11 +17,6 @@ const RPI_DOOR_IP = "172.20.10.2"
 const RPI_DOOR_PORT = "5000";
 const RPI_DOOR_URL = `http://${RPI_DOOR_IP}:${RPI_DOOR_PORT}`;
 
-
-const NICLA_VISION_IP = "172.20.10.14";
-const NICLA_VISION_PORT = "8000";
-const NICLA_VISION_URL = `http://${NICLA_VISION_IP}:${NICLA_VISION_PORT}`;
-
 const Status = {
   OK: 'OK',
   WARNING: 'Warning',
@@ -93,17 +88,17 @@ function App() {
     }
   };
 
-  // Fetch the latest image from camera
-  useEffect(() => {
-    const fetchImage = async () => {
-      const imageUrl = `${NICLA_VISION_URL}/latest-image`;
-      setImageUrl(`${imageUrl}?t=${new Date().getTime()}`); // Cache busting
-    };
+  // // Fetch the latest image from camera
+  // useEffect(() => {
+  //   const fetchImage = async () => {
+  //     const imageUrl = `${NICLA_VISION_URL}/latest-image`;
+  //     setImageUrl(`${imageUrl}?t=${new Date().getTime()}`); // Cache busting
+  //   };
 
-    fetchImage();
-    const interval = setInterval(fetchImage, 5000); // Poll every 5 seconds
-    return () => clearInterval(interval);
-  }, []);
+  //   fetchImage();
+  //   const interval = setInterval(fetchImage, 5000); // Poll every 5 seconds
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // Poll for data periodically
   useEffect(() => {
