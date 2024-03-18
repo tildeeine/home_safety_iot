@@ -5,21 +5,16 @@ void setup() {
 }
 
 void loop() {
-  int temp = analogRead(pinTemp);    //Read the analog pin
-  temp = temp * 0.48828125;   // convert output (mv) to readable celcius
+  int temp = analogRead(pinTemp);    
+  temp = temp * 0.48828125;   
   Serial.print("Temperature: ");
   Serial.print(temp);
-  Serial.println("C");  //print the temperature status
+  Serial.println("C");  
   delay(1000);
   
   if (Serial.available() > 0) {
-    //String incomingString = Serial.readString();
     char incomingChar = Serial.read();
-    Serial.println("Command received");
-
     if (incomingChar == 'A') {
-      Serial.println("Command off received");
-    } else if (incomingChar == 'B') {
       Serial.println("Command timer on received");
 	    int pitch = map(160,0,200, 50, 4000);
 	    tone(8,pitch,20);
