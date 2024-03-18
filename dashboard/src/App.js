@@ -6,14 +6,16 @@ import DoorStatusCard from './StatusCardDoor';
 import Sidebar from './Sidebar';
 import Modal from './Modal';
 import { faFireBurner, faDoorClosed, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import data from './network_info.json';
 
 
 // Constants for API URLs
-const RPI_SENSOR_IP = "172.20.10.14";
+const NETWORK_ID = 0;
+const RPI_SENSOR_IP = data[NETWORK_ID].OvenRPiIP;
 const RPI_SENSOR_PORT = "5000";
 const RPI_SENSOR_URL = `http://${RPI_SENSOR_IP}:${RPI_SENSOR_PORT}`;
 
-const RPI_DOOR_IP = "172.20.10.2"
+const RPI_DOOR_IP = data[NETWORK_ID].DoorRPiIP;
 const RPI_DOOR_PORT = "5000";
 const RPI_DOOR_URL = `http://${RPI_DOOR_IP}:${RPI_DOOR_PORT}`;
 

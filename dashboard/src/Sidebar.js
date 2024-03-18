@@ -2,9 +2,11 @@ import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
+import data from './network_info.json';
+
 
 function Sidebar() {
-    const NICLA_VISION_IP = "172.20.10.3";
+    const NICLA_VISION_IP = data[0].CameraIP;
     const NICLA_VISION_PORT = "8080";
     const NICLA_VISION_URL = `http://${NICLA_VISION_IP}:${NICLA_VISION_PORT}/capture?timestamp=`;
 
