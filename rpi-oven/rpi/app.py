@@ -32,7 +32,7 @@ def temperature():
     else:
         return jsonify({"temperature": latest_temp})
 
-@app.route('/alert_time/oven', methods=['GET', 'POST'])
+@app.route('/alert_time', methods=['GET', 'POST'])
 def alert_time():
     """Endpoint to get or update the alert timer duration."""
     global default_timer_duration

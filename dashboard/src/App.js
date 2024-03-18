@@ -53,14 +53,12 @@ function App() {
         axios.get(`${RPI_SENSOR_URL}/alert_status/oven`),
         axios.get(`${RPI_DOOR_URL}/alert_status/door`),
         axios.get(`${RPI_DOOR_URL}/door_last_opened`),
-        axios.get(`${RPI_DOOR_URL}/alert_time/door`),
         // Add other endpoints as needed for different appliances
       ]);
       const tempResponse = responses[0];
       const ovenAlert = responses[1];
       const doorOpenStatus = responses[2];
       const lastOpened = responses[3];
-      const doorTimer = responses[4];
 
       const determineStatus = (count) => {
         if (count >= 2) return Status.PROBLEM;

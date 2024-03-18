@@ -50,7 +50,7 @@ const Modal = ({
         event.preventDefault();
         try {
             const durationInSeconds = parseInt(newTimerDuration, 10) * 60;
-            await axios.post(`${url}/alert_time/${applianceInfo.type}`, { duration: durationInSeconds });
+            await axios.post(`${url}/alert_time`, { duration: durationInSeconds });
 
             setUpdateSuccess(true); // Indicate success
             setErrorMessage(''); // Clear any previous error message
