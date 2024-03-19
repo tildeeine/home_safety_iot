@@ -5,7 +5,7 @@ import StatusCardOven from './StatusCardOven';
 import DoorStatusCard from './StatusCardDoor';
 import Sidebar from './Sidebar';
 import Modal from './Modal';
-import { faFireBurner, faDoorClosed, faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import { faFireBurner } from '@fortawesome/free-solid-svg-icons';
 import data from './network_info.json';
 
 
@@ -29,16 +29,10 @@ function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
     Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_SENSOR_URL },
-    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door', url: RPI_DOOR_URL }, // Example of other appliance
-    // Add other appliances as needed
-  });
-  const [doorStatus, setDoorStatus] = useState({
-    isOpen: false,
-    lastOpened: 'Not available'
+    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door', url: RPI_DOOR_URL },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppliance, setSelectedAppliance] = useState(null);
-  const [imageUrl, setImageUrl] = useState('');
 
   // Handle card click events
   const handleCardClick = (appliance) => {
@@ -50,12 +44,11 @@ function App() {
   // Fetch data from server and update the relevant appliances
   const fetchData = async () => {
     try {
-      const responses = await Promise.all([
+      const responses = await Promise.allSettled([
         axios.get(`${RPI_SENSOR_URL}/temperature`),
         axios.get(`${RPI_SENSOR_URL}/alert_status/oven`),
         axios.get(`${RPI_DOOR_URL}/alert_status/door`),
         axios.get(`${RPI_DOOR_URL}/door_last_opened`),
-        // Add other endpoints as needed for different appliances
       ]);
       const tempResponse = responses[0];
       const ovenAlert = responses[1];
@@ -68,19 +61,19 @@ function App() {
         return Status.OK;
       };
 
-      // Update only inputs and status'
+      // Update appliances based on fetched data
       setAppliances(prevAppliances => ({
         ...prevAppliances,
         Oven: {
           ...prevAppliances.Oven,
-          temperature: tempResponse.data.temperature, // Assuming tempResponse.data contains the temperature
-          status: determineStatus(ovenAlert.data.alert), // Assuming ovenAlert.data contains the alert status
+          temperature: tempResponse.data.temperature,
+          status: determineStatus(ovenAlert.data.alert),
         },
         Door: {
           ...prevAppliances.Door,
-          isOpen: doorOpenStatus.data.isOpen, // Assuming doorOpenStatus.data contains the open status
-          lastOpened: lastOpened.data.lastOpened, // Assuming lastOpened.data contains the last opened time
-          status: determineStatus(doorOpenStatus.data.alert), // Assuming doorAlert.data contains the alert status for the door
+          isOpen: doorOpenStatus.data.isOpen,
+          lastOpened: lastOpened.data.lastOpened,
+          status: determineStatus(doorOpenStatus.data.alert),
         }
       }));
     } catch (error) {
@@ -88,30 +81,17 @@ function App() {
     }
   };
 
-  // // Fetch the latest image from camera
-  // useEffect(() => {
-  //   const fetchImage = async () => {
-  //     const imageUrl = `${NICLA_VISION_URL}/latest-image`;
-  //     setImageUrl(`${imageUrl}?t=${new Date().getTime()}`); // Cache busting
-  //   };
-
-  //   fetchImage();
-  //   const interval = setInterval(fetchImage, 5000); // Poll every 5 seconds
-  //   return () => clearInterval(interval);
-  // }, []);
-
   // Poll for data periodically
   useEffect(() => {
     fetchData();
     const interval = setInterval(fetchData, 5000);
     return () => clearInterval(interval);
-  }, []); // Rerun when status changes
+  }, []);
 
   return (
     <div className="relative flex flex-row min-h-screen">
       <Sidebar />
       <div className='absolute inset-0 z-10 w-screen h-full xl:p-32 xl:pr-48 xl:pl-96 md:p-18 md:pl-52 p-10 h-auto flex flex-row flex-wrap justify-evenly bg-gray-800'>
-        {/* <img src={imageUrl} alt="Latest from Nicla Vision" /> */}
         <div className='status-cards-container'>
           {Object.entries(appliances).map(([name, appliance]) => {
             switch (name) {
@@ -138,7 +118,6 @@ function App() {
                   />
                 );
               default:
-                // Handle other appliances or return null if no specific component
                 return null;
             }
           })}
