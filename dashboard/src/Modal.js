@@ -19,6 +19,8 @@ const Modal = ({
     isOpen,
     onClose,
     applianceInfo,
+    status,
+    mainData,
     url
 }) => {
 
@@ -28,6 +30,7 @@ const Modal = ({
     const [errorMessage, setErrorMessage] = useState('');
 
     // Fetch current alert time when the modal opens
+    // TODO manually check for updates and set to re-render
     useEffect(() => {
         if (isOpen) {
             const fetchAlertTime = async () => {
@@ -76,7 +79,7 @@ const Modal = ({
                 return (
                     <>
                         <h2 className="mb-6 mt-6 text-3xl font-bold">{applianceInfo.type}</h2>
-                        <p>Current Temperature: {applianceInfo.temperature}°C</p>
+                        <p>Current Temperature: {mainData}°C</p>
                         <p className="mt-4">Current Alert Time: {currentAlertTime} minutes</p>
                         <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
                             <label htmlFor="timerDuration" className="mb-2">Set New Alert Time (minutes):</label>
@@ -102,8 +105,8 @@ const Modal = ({
                 return (
                     <>
                         <h2 className="mb-6 mt-6 text-3xl font-bold">{applianceInfo.type}</h2>
-                        <p>Status: {applianceInfo.isOpen ? 'Open' : 'Closed'}</p>
-                        <p>Last Opened: {applianceInfo.lastOpened}</p>
+                        <p>Status: {status === Status.OK ? 'Closed' : 'Open'}</p>
+                        <p>Last Opened: {mainData}</p>
                         <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
                             <label htmlFor="timerDuration" className="mb-2">Set New Alert Time (minutes):</label>
                             <input
@@ -125,7 +128,7 @@ const Modal = ({
                     </>
                 );
             default:
-                console.log(backgroundColorClasses[applianceInfo.status]);
+                console.log(backgroundColorClasses[status]);
                 return <p className="mt-10 text-3xl font-bold">Appliance info not available</p>;
         }
     };
@@ -133,7 +136,7 @@ const Modal = ({
     return (
         <>
             <div className="overlay" onClick={onClose}></div>
-            <div className={`modal ${backgroundColorClasses[applianceInfo.status]} text-center`}>
+            <div className={`modal ${backgroundColorClasses[status]} text-center`}>
                 <div className="modal-content text-lg">
                     {renderModalContent()}
                 </div>

@@ -29,10 +29,10 @@ function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
     Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_OVEN_URL },
-    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door', url: RPI_DOOR_URL },
+    Door: { lastOpened: 'Not available', isOpen: false, status: Status.OK, type: 'Door', url: RPI_DOOR_URL },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAppliance, setSelectedAppliance] = useState(null);
+  const [selectedAppliance, setSelectedAppliance] = useState('Oven');
 
   // Handle card click events
   const handleCardClick = (appliance) => {
@@ -125,6 +125,8 @@ function App() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             applianceInfo={selectedAppliance}
+            status={selectedAppliance?.status}
+            mainData={selectedAppliance?.type === 'Oven' ? selectedAppliance.temperature : selectedAppliance.lastOpened}
             url={selectedAppliance?.url}
           />
         </div>
