@@ -33,6 +33,7 @@ def door_monitor():
             door_last_changed = time.time()
             reset_timer()
         print(f"Door status: {door_status}")
+        print(f"Last changed: {door_last_changed}")
         time.sleep(1)  # Check every second
 
 def reset_timer():
