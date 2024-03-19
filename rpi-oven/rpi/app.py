@@ -75,7 +75,7 @@ def monitor_temperature():
                     if temp > temp_threshold and time.time() >= timer_end_time:
                         print("ALERT: Temperature too high for too long!")
                         alert_status += 1
-                        ser.write(b'B')  # Example action
+                        ser.write(b'A')  # Example action
                     elif temp <= temp_threshold:
                         alert_status = 0
                         reset_timer()
