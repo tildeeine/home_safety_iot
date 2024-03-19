@@ -44,7 +44,7 @@ function App() {
   // Fetch data from server and update the relevant appliances
   const fetchData = async () => {
     try {
-      const responses = await Promise.allSettled([
+      const responses = await Promise.all([ // Promise all because we set data based on these results, can't access null
         axios.get(`${RPI_SENSOR_URL}/temperature`),
         axios.get(`${RPI_SENSOR_URL}/alert_status/oven`),
         axios.get(`${RPI_DOOR_URL}/alert_status/door`),
