@@ -29,7 +29,7 @@ function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
     Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_OVEN_URL },
-    Door: { lastOpened: 'Not available', isOpen: false, status: Status.OK, type: 'Door', url: RPI_DOOR_URL },
+    Door: { doorLastChanged: 'Not available', isOpen: false, status: Status.OK, type: 'Door', url: RPI_DOOR_URL },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppliance, setSelectedAppliance] = useState('Oven');
@@ -48,12 +48,12 @@ function App() {
         axios.get(`${RPI_OVEN_URL}/temperature`),
         axios.get(`${RPI_OVEN_URL}/alert_status`),
         axios.get(`${RPI_DOOR_URL}/alert_status`),
-        axios.get(`${RPI_DOOR_URL}/door_last_opened`),
+        axios.get(`${RPI_DOOR_URL}/door_last_changed`),
       ]);
       const tempResponse = responses[0];
       const ovenAlert = responses[1];
       const doorOpenStatus = responses[2];
-      const lastOpened = responses[3];
+      const doorLastChanged = responses[3];
 
       const determineStatus = (count) => {
         if (count >= 2) return Status.PROBLEM;
@@ -72,7 +72,7 @@ function App() {
         Door: {
           ...prevAppliances.Door,
           isOpen: doorOpenStatus.data.isOpen,
-          lastOpened: lastOpened.data.lastOpened,
+          doorLastChanged: doorLastChanged.data.doorLastChanged,
           status: determineStatus(doorOpenStatus.data.alert),
         }
       }));
@@ -112,7 +112,7 @@ function App() {
                     key={name}
                     appliance={name}
                     isOpen={appliance.isOpen}
-                    lastOpened={appliance.lastOpened}
+                    doorLastChanged={appliance.doorLastChanged}
                     onClick={() => handleCardClick(name)}
                     status={appliance.status}
                   />
@@ -126,7 +126,7 @@ function App() {
             onClose={() => setIsModalOpen(false)}
             applianceInfo={selectedAppliance}
             status={selectedAppliance?.status}
-            mainData={selectedAppliance?.type === 'Oven' ? selectedAppliance.temperature : selectedAppliance.lastOpened}
+            mainData={selectedAppliance?.type === 'Oven' ? selectedAppliance.temperature : selectedAppliance.doorLastChanged}
             url={selectedAppliance?.url}
           />
         </div>

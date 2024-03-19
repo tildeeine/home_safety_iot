@@ -62,7 +62,7 @@ def get_alert_status():
 
 def monitor_temperature():
     """Function to continuously monitor the temperature from the Arduino."""
-    global latest_temp, alert_status
+    global latest_temp, alert_status, timer_end_time, temp_threshold
     while True:
         if ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
