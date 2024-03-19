@@ -21,7 +21,7 @@ void loop() {
       Serial.println("Command timer on received");
 	    int pitch = map(160,0,200, 50, 4000);
 	    tone(8,pitch,20);
-      analogWrite(motorPin, 50);
+      analogWrite(motorPin, 200);
       delay(2000);
       analogWrite(motorPin, 0);
     } else if (incomingChar == 'B') {
