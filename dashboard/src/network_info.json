@@ -12,7 +12,7 @@
         "OvenRPiIP": "172.20.10.14",
         "DoorRPiIP": "172.20.10.2",
         "CameraIP": "172.20.10.3"
-    }
+    },
     {
         "SSID": "Tubaluba",
         "password": "Tuvaerkul",
