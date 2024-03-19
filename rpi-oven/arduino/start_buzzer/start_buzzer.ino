@@ -3,6 +3,8 @@ const int motorPin = 9;
 
 void setup() {
   Serial.begin(9600);
+  pinMode(pinTemp, INPUT);
+  pinMode(motorPin, OUTPUT);
 }
 
 void loop() {
@@ -21,9 +23,9 @@ void loop() {
 	    tone(8,pitch,20);
     } else if (incomingChar == 'B') {
       Serial.println("Command kill switch received");
-      digitalWrite(motorPin, HIGH);
+      analogWrite(motorPin, 50);
       delay(2000);
-      digitalWrite(motorPin, LOW);
+      analogWrite(motorPin, 0);
     }
   }
 }
