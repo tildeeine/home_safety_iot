@@ -1,0 +1,23 @@
+[
+    {
+        "SSID": "Francisca_Silva_iPhone",
+        "password": "qualquercoisaserve",
+        "OvenRPiIP": "172.20.10.11",
+        "DoorRPiIP": "172.20.10.13",
+        "CameraIP": "172.20.10.14"
+    },
+    {
+        "SSID": "Eine",
+        "password": "Tilde123",
+        "OvenRPiIP": "172.20.10.14",
+        "DoorRPiIP": "172.20.10.2",
+        "CameraIP": "172.20.10.3"
+    }
+    {
+        "SSID": "Tubaluba",
+        "password": "Tuvaerkul",
+        "OvenRPiIP": "172.20.10.7",
+        "DoorRPiIP": "",
+        "CameraIP": ""
+    }
+]

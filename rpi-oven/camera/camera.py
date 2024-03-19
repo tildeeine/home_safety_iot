@@ -1,7 +1,13 @@
 import sensor, time, network, socket, pyb
+import json
 
-SSID = "Eine"  # Network SSID
-KEY = "Tilde123"  # Network key
+f = open('network_info.json', 'r')
+network_idx = 0 # Change this to the index of the network you want to use
+data = json.load(f)[network_idx]  
+f.close()
+
+SSID = data["SSID"]  # Network SSID
+KEY = data["password"]  # Network key
 HOST = ''  # Use first available interface (listen on all interfaces)
 PORT = 8080  # Arbitrary non-privileged port
 
