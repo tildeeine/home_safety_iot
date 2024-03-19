@@ -1,4 +1,5 @@
-int pinTemp = A1;
+const int pinTemp = A1;
+const int motorPin = 9;
 
 void setup() {
   Serial.begin(9600);
@@ -18,6 +19,11 @@ void loop() {
       Serial.println("Command timer on received");
 	    int pitch = map(160,0,200, 50, 4000);
 	    tone(8,pitch,20);
+    } else if (incomingChar == 'B') {
+      Serial.println("Command kill switch received");
+      digitalWrite(motorPin, HIGH);
+      delay(2000);
+      digitalWrite(motorPin, LOW);
     }
   }
 }
