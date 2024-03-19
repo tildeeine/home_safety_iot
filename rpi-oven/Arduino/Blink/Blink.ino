@@ -17,9 +17,9 @@ void loop() {
     char incomingChar = Serial.read();
     Serial.println("Command received");
 
-    if (incomingChar == 'A') {
+    if (incomingChar == 'X') {
       Serial.println("Command off received");
-    } else if (incomingChar == 'B') {
+    } else if (incomingChar == 'A') {
       Serial.println("Command timer on received");
 	    int pitch = map(160,0,200, 50, 4000);
 	    tone(8,pitch,20);
