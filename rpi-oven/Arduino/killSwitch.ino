@@ -1,4 +1,4 @@
-const int switchPin = 2;
+const int switchPin = 2;    // receives input from raspberry pi
 const int motorPin = 9;
 int switchState = 0; 
 
