@@ -44,6 +44,9 @@ If you mention something, please provide links.
 
 These instructions will get you a copy of the project up and running on for testing purposes.  
 
+- set up the physical system (ADD DIAGRAM)
+- clone the repository from github using ssh
+- install required packages (visible under "Software Prerequisities")
 
 ### Assembly Instructions
 
@@ -61,6 +64,16 @@ https://www.circuito.io/app?components=512,11021,333429
 - Some IDE on your computer to program RPis
 - Libraries and dependencies
     - flask
+    - flask_corse
+    - gpiozero
+    - network
+    - sensor
+    - serial
+    - signal
+    - socket
+    - threading
+    - time
+
 - Node package manager
 
 In this section include detailed instructions for installing additiona software the application is dependent upon (such as PostgreSQL database, for example).
