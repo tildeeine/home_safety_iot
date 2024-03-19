@@ -36,7 +36,7 @@ def reset_timer():
     global timer_end_time, default_timer_duration
     timer_end_time = time.time() + default_timer_duration
 
-@app.route('/alert_time/door', methods=['GET', 'POST'])
+@app.route('/alert_time', methods=['GET', 'POST'])
 def door_alert_time():
     """Endpoint to get or update the alert timer duration."""
     global default_timer_duration, timer_end_time
@@ -45,8 +45,8 @@ def door_alert_time():
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
+                timer_end_time += new_duration * 60
                 default_timer_duration = new_duration * 60
-                timer_end_time = time.time() + default_timer_duration
                 return jsonify({"message": "Door alert time updated successfully", "duration": new_duration}), 200
             else:
                 return jsonify({"message": "Invalid duration provided"}), 400
@@ -55,7 +55,7 @@ def door_alert_time():
     else:
         return jsonify({"duration": default_timer_duration // 60}), 200
 
-@app.route('/alert_status/door', methods=['GET'])
+@app.route('/alert_status', methods=['GET'])
 def door_alert_status():
     """Endpoint to get the current number of door alerts."""
     global alert_status

@@ -11,9 +11,9 @@ import data from './network_info.json';
 
 // Constants for API URLs
 const NETWORK_ID = 0;
-const RPI_SENSOR_IP = data[NETWORK_ID].OvenRPiIP;
-const RPI_SENSOR_PORT = "5000";
-const RPI_SENSOR_URL = `http://${RPI_SENSOR_IP}:${RPI_SENSOR_PORT}`;
+const RPI_OVEN_IP = data[NETWORK_ID].OvenRPiIP;
+const RPI_OVEN_PORT = "5000";
+const RPI_OVEN_URL = `http://${RPI_OVEN_IP}:${RPI_OVEN_PORT}`;
 
 const RPI_DOOR_IP = data[NETWORK_ID].DoorRPiIP;
 const RPI_DOOR_PORT = "5000";
@@ -28,7 +28,7 @@ const Status = {
 function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
-    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_SENSOR_URL },
+    Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_OVEN_URL },
     Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door', url: RPI_DOOR_URL },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,9 +45,9 @@ function App() {
   const fetchData = async () => {
     try {
       const responses = await Promise.all([ // Promise all because we set data based on these results, can't access null
-        axios.get(`${RPI_SENSOR_URL}/temperature`),
-        axios.get(`${RPI_SENSOR_URL}/alert_status/oven`),
-        axios.get(`${RPI_DOOR_URL}/alert_status/door`),
+        axios.get(`${RPI_OVEN_URL}/temperature`),
+        axios.get(`${RPI_OVEN_URL}/alert_status`),
+        axios.get(`${RPI_DOOR_URL}/alert_status`),
         axios.get(`${RPI_DOOR_URL}/door_last_opened`),
       ]);
       const tempResponse = responses[0];
