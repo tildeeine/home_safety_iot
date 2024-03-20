@@ -19,6 +19,8 @@ const Modal = ({
     isOpen,
     onClose,
     applianceInfo,
+    status,
+    mainData,
     url
 }) => {
 
@@ -101,7 +103,7 @@ const Modal = ({
                 return (
                     <>
                         <h2 className="mb-6 mt-6 text-3xl font-bold">{applianceInfo.type}</h2>
-                        <p>Current Temperature: {applianceInfo.temperature}°C</p>
+                        <p>Current Temperature: {mainData}°C</p>
                         <p className="mt-4">Current Alert Time: {currentAlertTime} minutes</p>
                         <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
                             <label htmlFor="timerDuration" className="mb-2">Set New Alert Time (minutes):</label>
@@ -138,8 +140,14 @@ const Modal = ({
                 return (
                     <>
                         <h2 className="mb-6 mt-6 text-3xl font-bold">{applianceInfo.type}</h2>
+                        <p>Status: {status === Status.OK ? 'Closed' : 'Open'}</p>
+                        {status === Status.OK && (
+                            <p>Closed at: {mainData}</p>
+                        )}
+                        {status !== Status.OK && (
+                            <p>Opened at: {mainData}</p>
+                        )}
                         <p>Status: {applianceInfo.isOpen ? 'Open' : 'Closed'}</p>
-                        <p>Last Opened: {applianceInfo.lastOpened}</p>
                         <p className="mt-4">Current Alert Time: {currentAlertTime} minutes</p>
                         <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
                             <label htmlFor="timerDuration" className="mb-2">Set New Alert Time (minutes):</label>
@@ -162,7 +170,7 @@ const Modal = ({
                     </>
                 );
             default:
-                console.log(backgroundColorClasses[applianceInfo.status]);
+                console.log(backgroundColorClasses[status]);
                 return <p className="mt-10 text-3xl font-bold">Appliance info not available</p>;
         }
     };
@@ -170,7 +178,7 @@ const Modal = ({
     return (
         <>
             <div className="overlay" onClick={onClose}></div>
-            <div className={`modal ${backgroundColorClasses[applianceInfo.status]} text-center`}>
+            <div className={`modal ${backgroundColorClasses[status]} text-center`}>
                 <div className="modal-content text-lg">
                     {renderModalContent()}
                 </div>
