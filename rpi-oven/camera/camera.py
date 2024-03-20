@@ -1,13 +1,7 @@
 import sensor, time, network, socket, pyb
-import json
 
-f = open('network_info.json', 'r')
-network_idx = 0 # Change this to the index of the network you want to use
-data = json.load(f)[network_idx]  
-f.close()
-
-SSID = data["SSID"]  # Network SSID
-KEY = data["password"]  # Network key
+SSID = ""  # Network SSID
+KEY = ""  # Network key
 HOST = ''  # Use first available interface (listen on all interfaces)
 PORT = 8080  # Arbitrary non-privileged port
 
@@ -42,6 +36,7 @@ s.listen(5)
 print("Listening on {}:{}".format(HOST, PORT))
 
 def accept_conn(s):
+    print("waiting")
     client, addr = s.accept()
     print("Connected to {}:{}".format(addr[0], addr[1]))
     led.on()
