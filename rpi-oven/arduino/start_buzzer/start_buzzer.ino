@@ -24,7 +24,7 @@ void loop() {
 
     } else if (incomingChar == 'B') {
       Serial.println("Command kill switch received");
-      analogWrite(motorPin, 80);
+      analogWrite(motorPin, 100);
       delay(2000);
       analogWrite(motorPin, 0);
     }
