@@ -48,6 +48,8 @@ def door_alert_time():
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
+                print("old end time:", timer_end_time)
+
                 timer_end_time += (new_duration-current_timer_duration)
                 print("New end time:", timer_end_time)
                 current_timer_duration = new_duration
