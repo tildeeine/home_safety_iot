@@ -6,7 +6,8 @@ import data from './network_info.json';
 
 
 function Sidebar() {
-    const NICLA_VISION_IP = data[0].CameraIP;
+    const NETWORK_ID = 1;
+    const NICLA_VISION_IP = data[NETWORK_ID].CameraIP;
     const NICLA_VISION_PORT = "8080";
     const NICLA_VISION_URL = `http://${NICLA_VISION_IP}:${NICLA_VISION_PORT}/capture?timestamp=`;
 

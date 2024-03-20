@@ -10,7 +10,7 @@ import data from './network_info.json';
 
 
 // Constants for API URLs
-const NETWORK_ID = 0;
+const NETWORK_ID = 1;
 const RPI_SENSOR_IP = data[NETWORK_ID].OvenRPiIP;
 const RPI_SENSOR_PORT = "5000";
 const RPI_SENSOR_URL = `http://${RPI_SENSOR_IP}:${RPI_SENSOR_PORT}`;
