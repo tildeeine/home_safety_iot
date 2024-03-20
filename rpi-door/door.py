@@ -34,7 +34,7 @@ def door_monitor():
             if alert_status > 0:
                 print("Here")
                 door_last_changed = time.time()
-            print("closed", alert_status)//!
+            print("closed", alert_status)#!
             alert_status = 0  # No alert
             reset_timer()
         print(f"Door status: {door_status}")
