@@ -70,27 +70,27 @@ const Modal = ({
         }
     };
 
-        // Handle turning off the appliance
-        const turnOffAppliance = async (event) => {
-            event.preventDefault();
-            try {
-                await axios.post(`${url}/killOven`, {});
-    
-                setUpdateSuccessSwitch(true); // Indicate success
-                setErrorMessageSwitch(''); // Clear any previous error message
-                setTimeout(() => {
-                    setUpdateSuccessSwitch(null); // Reset to hide the message
-                }, 3000); // Hide success message after 3 seconds
-            } catch (error) {
-                console.error('Failed to turn off appliance:', error);
-                setUpdateSuccessSwitch(false); // Indicate failure
-                setErrorMessageSwitch('Failed to turn off appliance. Please try again.'); // Set an appropriate error message
-                setTimeout(() => {
-                    setErrorMessageSwitch(''); // Clear the error message
-                    setUpdateSuccessSwitch(null); // Reset updateSuccess to hide any message
-                }, 3000); // Hide error message after 3 seconds
-            }
-        };
+    // Handle turning off the appliance
+    const turnOffAppliance = async (event) => {
+        event.preventDefault();
+        try {
+            await axios.post(`${url}/killOven`, {});
+
+            setUpdateSuccessSwitch(true); // Indicate success
+            setErrorMessageSwitch(''); // Clear any previous error message
+            setTimeout(() => {
+                setUpdateSuccessSwitch(null); // Reset to hide the message
+            }, 3000); // Hide success message after 3 seconds
+        } catch (error) {
+            console.error('Failed to turn off appliance:', error);
+            setUpdateSuccessSwitch(false); // Indicate failure
+            setErrorMessageSwitch('Failed to turn off appliance. Please try again.'); // Set an appropriate error message
+            setTimeout(() => {
+                setErrorMessageSwitch(''); // Clear the error message
+                setUpdateSuccessSwitch(null); // Reset updateSuccess to hide any message
+            }, 3000); // Hide error message after 3 seconds
+        }
+    };
 
 
     // Early return if modal is not open
@@ -123,9 +123,9 @@ const Modal = ({
                                 <p className="text-red-500">{errorMessage}</p>
                             )}
                         </form>
-                        { applianceInfo.status !== Status.OK && (
+                        {applianceInfo.status !== Status.OK && (
                             <>
-                                <button onClick={turnOffAppliance} className="mt-4 p-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700">Update Timer</button>
+                                <button onClick={turnOffAppliance} className="mt-4 p-2 px-4 bg-red-500 text-white rounded hover:bg-red-700">Turn Oven off</button>
                                 {updateSuccessSwitch && (
                                     <p className="text-green-500">Appliance turned off successfully! (Wait for temperature to go down)</p>
                                 )}
