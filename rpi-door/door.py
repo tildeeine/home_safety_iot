@@ -15,6 +15,7 @@ button = Button(input_pin, pull_up=True)
 # Initialize global variables for the door status and alert timer
 door_status = "closed"  # Default status
 default_timer_duration = 4  # 4 sec, test value
+current_timer_duration = default_timer_duration
 timer_end_time = time.time() + default_timer_duration
 alert_status = 0
 door_last_changed = 0 # To show not set yet
@@ -27,7 +28,7 @@ def door_monitor():
             alert_status += 1  # Alert triggered
             if alert_status == 1:
                 door_last_changed = time.time()
-            print("Alert", alert_status) #!
+            print("Alert", alert_status) 
         elif door_status == "closed":
             alert_status = 0  # No alert
             door_last_changed = time.time()
@@ -38,32 +39,35 @@ def door_monitor():
 
 def reset_timer():
     """Function to reset the alert timer."""
-    global timer_end_time, default_timer_duration
-    timer_end_time = time.time() + default_timer_duration
+    global timer_end_time, current_timer_duration
+    timer_end_time = time.time() + current_timer_duration
 
 @app.route('/alert_time', methods=['GET', 'POST'])
 def door_alert_time():
     """Endpoint to get or update the alert timer duration."""
-    global default_timer_duration, timer_end_time
+    global timer_end_time, current_timer_duration, alert_status
     if request.method == 'POST':
         data = request.json
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
-                timer_end_time += new_duration * 60
-                default_timer_duration = new_duration * 60
+                timer_end_time += (new_duration-current_timer_duration)
+                current_timer_duration = new_duration
+                alert_status = 0  # Reset alert status
+                print("Updated door timer duration to:", new_duration, " seconds")
                 return jsonify({"message": "Door alert time updated successfully", "duration": new_duration}), 200
             else:
                 return jsonify({"message": "Invalid duration provided"}), 400
         except (ValueError, KeyError, TypeError):
             return jsonify({"message": "Error processing request"}), 400
     else:
-        return jsonify({"duration": default_timer_duration // 60}), 200
+        return jsonify({"duration": current_timer_duration // 60}), 200
 
 @app.route('/alert_status', methods=['GET'])
 def door_alert_status():
     """Endpoint to get the current number of door alerts."""
     global alert_status
+    print("Alert gotten: ", alert_status)
 
     return jsonify({"alert": alert_status})
 

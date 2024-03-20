@@ -28,9 +28,10 @@ const Modal = ({
     const [currentAlertTime, setCurrentAlertTime] = useState('');
     const [updateSuccess, setUpdateSuccess] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
+    const [updateSuccessSwitch, setUpdateSuccessSwitch] = useState(null);
+    const [errorMessageSwitch, setErrorMessageSwitch] = useState('');
 
     // Fetch current alert time when the modal opens
-    // TODO manually check for updates and set to re-render
     useEffect(() => {
         if (isOpen) {
             const fetchAlertTime = async () => {
@@ -69,6 +70,29 @@ const Modal = ({
         }
     };
 
+    // Handle turning off the appliance
+    const turnOffAppliance = async (event) => {
+        event.preventDefault();
+        try {
+            await axios.post(`${url}/killOven`, {});
+
+            setUpdateSuccessSwitch(true); // Indicate success
+            setErrorMessageSwitch(''); // Clear any previous error message
+            setTimeout(() => {
+                setUpdateSuccessSwitch(null); // Reset to hide the message
+            }, 3000); // Hide success message after 3 seconds
+        } catch (error) {
+            console.error('Failed to turn off appliance:', error);
+            setUpdateSuccessSwitch(false); // Indicate failure
+            setErrorMessageSwitch('Failed to turn off appliance. Please try again.'); // Set an appropriate error message
+            setTimeout(() => {
+                setErrorMessageSwitch(''); // Clear the error message
+                setUpdateSuccessSwitch(null); // Reset updateSuccess to hide any message
+            }, 3000); // Hide error message after 3 seconds
+        }
+    };
+
+
     // Early return if modal is not open
     if (!isOpen) return null;
 
@@ -99,6 +123,17 @@ const Modal = ({
                                 <p className="text-red-500">{errorMessage}</p>
                             )}
                         </form>
+                        {applianceInfo.status !== Status.OK && (
+                            <>
+                                <button onClick={turnOffAppliance} className="mt-4 p-2 px-4 bg-red-500 text-white rounded hover:bg-red-700">Turn Oven off</button>
+                                {updateSuccessSwitch && (
+                                    <p className="text-green-500">Appliance turned off successfully! (Wait for temperature to go down)</p>
+                                )}
+                                {updateSuccessSwitch === false && errorMessageSwitch && (
+                                    <p className="text-red-500">{errorMessageSwitch}</p>
+                                )}
+                            </>
+                        )}
                     </>
                 );
             case 'Door':
@@ -112,6 +147,8 @@ const Modal = ({
                         {status !== Status.OK && (
                             <p>Opened at: {mainData}</p>
                         )}
+                        <p>Status: {applianceInfo.isOpen ? 'Open' : 'Closed'}</p>
+                        <p className="mt-4">Current Alert Time: {currentAlertTime} minutes</p>
                         <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
                             <label htmlFor="timerDuration" className="mb-2">Set New Alert Time (minutes):</label>
                             <input

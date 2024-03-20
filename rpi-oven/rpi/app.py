@@ -17,6 +17,7 @@ latest_temp = 0  # Store the latest temperature reading
 temp_threshold = 80  # Temperature threshold for alerts
 
 default_timer_duration = 3
+current_timer_duration = default_timer_duration
 timer_end_time = time.time() + default_timer_duration
 
 alert_status = 0
@@ -35,22 +36,35 @@ def temperature():
 @app.route('/alert_time', methods=['GET', 'POST'])
 def alert_time():
     """Endpoint to get or update the alert timer duration."""
-    global default_timer_duration, timer_end_time
+    global current_timer_duration, timer_end_time, default_timer_duration, alert_status
 
     if request.method == 'POST':
         data = request.json
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
-                timer_end_time += new_duration * 60
-                default_timer_duration = new_duration # * 60 
+                timer_end_time += (new_duration-current_timer_duration)
+                current_timer_duration = new_duration 
+                alert_status = 0
+                print("Updated oventimer duration to:", new_duration, " seconds")
                 return jsonify({"message": "Alert time updated successfully", "duration": new_duration}), 200
             else:
                 return jsonify({"message": "Invalid duration provided"}), 400
         except (ValueError, KeyError, TypeError):
             return jsonify({"message": "Error processing request"}), 400
     else:
-        return jsonify({"duration": default_timer_duration // 60}), 200 
+        return jsonify({"duration": current_timer_duration // 60}), 200 
+    
+@app.route('/killOven', methods=['POST'])
+def killOven():
+    """Endpoint to turn off oven."""
+    try:
+        # send signal through serial to turn off oven
+        ser.write(b'B')
+
+        return jsonify({"message": "Appliance turned off successfully"}), 200
+    except (ValueError, KeyError, TypeError):
+        return jsonify({"message": "Error processing request"}), 400
     
 @app.route('/alert_status', methods=['GET'])
 def get_alert_status():
@@ -62,7 +76,7 @@ def get_alert_status():
 
 def monitor_temperature():
     """Function to continuously monitor the temperature from the Arduino."""
-    global latest_temp, alert_status, timer_end_time, temp_threshold
+    global latest_temp, alert_status, temp_threshold, timer_end_time
     while True:
         if ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
@@ -76,18 +90,20 @@ def monitor_temperature():
                     if temp > temp_threshold and time.time() >= timer_end_time:
                         print("ALERT: Temperature too high for too long!")
                         alert_status += 1
-                        ser.write(b'A')  # Example action
+                        ser.write(b'A')  
                     elif temp <= temp_threshold:
                         alert_status = 0
                         reset_timer()
+
+
             except ValueError:
                 print(f"Error converting temperature value: {line}")
         time.sleep(1)
 
 def reset_timer():
     """Function to reset the alert timer."""
-    global timer_end_time, default_timer_duration
-    timer_end_time = time.time() + default_timer_duration
+    global timer_end_time, current_timer_duration
+    timer_end_time = time.time() + current_timer_duration
 
 def start_sensor_processing():
     """Wrapper function to start sensor processing in a thread."""
