@@ -69,18 +69,19 @@ Add image of door and motor circuit
 <img src="img/rpi_zero2W.png" alt="Circuit" width="300">
     
 Camera setup:
-    Connect the camera to your computer with a USB cable. A folder will then appear which contains a file called "main.py". Copy the content from that file into OpenMV. Fill in the fields for SSID and KEY with you mobile network name and password. Save the file. Click the connection icon showed in the image below, and then click play. 
-        
+a. Connect the camera to your computer with a USB cable. A folder will then appear which contains a file called "main.py". Copy the content from that file into OpenMV. Fill in the fields for SSID and KEY with you mobile network name and password. Save the file, and then click play. 
+b. Now wait for the camera to connect to your network (you will see the camera blinking red while looking for your network). When it's connected it will tell so in the terminal, in addition to stop blinking.
+c. Navigate via "tools" to find the option that says "Save the open script to OpenMN Cam (as main.py)", as shown below. Wait for the red light to stop.
+    
 <img src="img/cam_conn.png" alt="connecting camera" width="400">
-        
-    Now wait for the camera to connect to your network (you will see the camera blinking red while looking for you network). When its connected it will tell so in the terminal, in addition to stop blinking. Navigate via "tools" to find the option that says "Save open script to OpenMN Cam (as main.py)". Eject the device before you pysically remove it. The camera should now have the file installed and can be connected to RPi 4 via USB. 
 
+d. Disconnect(symbol below) and eject the device before you physically remove it. The camera should now have the file installed and can be connected to RPi 4 via USB. 
 <img src="img/conn_icon.png" alt="connect icon" width="100">
 
-2) Clone the repository from github using ssh
-3) Install required packages (visible under "Software Prerequisities") (not sure if this is needed?)
-4) Identify IP adresses for both RPis and the camera: `nmap -sn 172.20.10.0/24`
-5) Identify your mobile network name and password. The IP adresses and mobile network information should be added to the file called "network_info.json" in the following format:
+2) Clone the repository from github to both Raspberry Pi's.
+3) Install required packages (visible under "Software Prerequisites")
+4) Identify IP addresses for both RPis and the camera: `nmap -sn xxx.xxx.xxx.0/24` (xxx is the network ip mask)
+5) Identify your mobile network name and password. The IP addresses and mobile network information should be added to the file called "/dashboard/srs/network_info.json" in the following format:
 ```
     {
         "SSID": "",
