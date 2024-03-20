@@ -29,7 +29,7 @@ function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
     Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_OVEN_URL },
-    Door: { doorLastChanged: 'Not available', isOpen: false, status: Status.OK, type: 'Door', url: RPI_DOOR_URL },
+    Door: { last_changed: 'Not available', isOpen: false, status: Status.OK, type: 'Door', url: RPI_DOOR_URL },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppliance, setSelectedAppliance] = useState('Oven');

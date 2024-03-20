@@ -4,6 +4,7 @@ from gpiozero import Button
 from signal import SIGTERM, signal
 import threading
 import time
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -75,6 +76,8 @@ def door_alert_status():
 @app.route('/door_last_changed', methods=['GET'])
 def door_last_changed():
     global door_last_changed
+    dt_object = datetime.fromtimestamp(door_last_changed)
+    human_readable_time = dt_object.strftime('%Y-%m-%d %H:%M:%S')
     return jsonify({"last_changed": door_last_changed})
 
 def start_flask_app():
