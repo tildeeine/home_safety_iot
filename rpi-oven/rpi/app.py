@@ -52,6 +52,17 @@ def alert_time():
     else:
         return jsonify({"duration": default_timer_duration // 60}), 200 
     
+@app.route('/killOven', methods=['POST'])
+def killOven():
+    """Endpoint to turn off oven."""
+    try:
+        # send signal through serial to turn off oven
+        ser.write(b'B')
+
+        return jsonify({"message": "Appliance turned off successfully"}), 200
+    except (ValueError, KeyError, TypeError):
+        return jsonify({"message": "Error processing request"}), 400
+    
 @app.route('/alert_status', methods=['GET'])
 def get_alert_status():
     global alert_status
@@ -76,7 +87,7 @@ def monitor_temperature():
                     if temp > temp_threshold and time.time() >= timer_end_time:
                         print("ALERT: Temperature too high for too long!")
                         alert_status += 1
-                        ser.write(b'B')  # Example action
+                        ser.write(b'A')  
                     elif temp <= temp_threshold:
                         alert_status = 0
                         reset_timer()
