@@ -140,6 +140,7 @@ const Modal = ({
                         <h2 className="mb-6 mt-6 text-3xl font-bold">{applianceInfo.type}</h2>
                         <p>Status: {applianceInfo.isOpen ? 'Open' : 'Closed'}</p>
                         <p>Last Opened: {applianceInfo.lastOpened}</p>
+                        <p className="mt-4">Current Alert Time: {currentAlertTime} minutes</p>
                         <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
                             <label htmlFor="timerDuration" className="mb-2">Set New Alert Time (minutes):</label>
                             <input
