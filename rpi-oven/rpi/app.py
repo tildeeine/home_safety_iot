@@ -14,7 +14,7 @@ ser.flush()
 
 # Initialize global variables
 latest_temp = 0  # Store the latest temperature reading
-temp_threshold = 70  # Temperature threshold for alerts
+temp_threshold = 80  # Temperature threshold for alerts
 
 default_timer_duration = 3
 timer_end_time = time.time() + default_timer_duration
@@ -35,14 +35,16 @@ def temperature():
 @app.route('/alert_time', methods=['GET', 'POST'])
 def alert_time():
     """Endpoint to get or update the alert timer duration."""
-    global default_timer_duration
+    global default_timer_duration, timer_end_time
 
     if request.method == 'POST':
         data = request.json
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
-                default_timer_duration = new_duration # * 60 
+                timer_end_time += new_duration 
+                default_timer_duration = new_duration 
+                print("Updated oventimer duration to:", new_duration, " minutes")
                 return jsonify({"message": "Alert time updated successfully", "duration": new_duration}), 200
             else:
                 return jsonify({"message": "Invalid duration provided"}), 400
@@ -51,7 +53,6 @@ def alert_time():
     else:
         return jsonify({"duration": default_timer_duration // 60}), 200 
     
-
 @app.route('/killOven', methods=['POST'])
 def killOven():
     """Endpoint to turn off oven."""
@@ -63,7 +64,7 @@ def killOven():
     except (ValueError, KeyError, TypeError):
         return jsonify({"message": "Error processing request"}), 400
     
-@app.route('/alert_status/oven', methods=['GET'])
+@app.route('/alert_status', methods=['GET'])
 def get_alert_status():
     global alert_status
     print("Alerts: ", alert_status)
