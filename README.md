@@ -25,12 +25,14 @@ If you mention something, please provide links.
 ### Hardware
 
 * [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) - 1 unit - Development board for reading sensors and sending this information to our dashboard.
-* [Raspberry Pi 3](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/) - 1 unit - Development board for reading "door input", illustrated through an open/close circuit, and sending this information to our dashboard. 
+* [Raspberry Pi zero 2W](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/) - 1 unit - Development board for reading "door input", illustrated through an open/close circuit, and sending this information to our dashboard. 
 * [Arduino starter kit](https://store.arduino.cc/collections/kits/products/arduino-starter-kit-multi-language) - Includes a range of the components we used for development. More specifically, we used the following components from the starter kit:
     * Arduino uno
-    * Breadboard
+    * Battery 9V
+    * Breadboards
     * Buzzer
     * Jumper wires 
+    * Motor
     * Resistor 1K ohm
     * Temperature sensor
     * Transistor 
@@ -56,12 +58,13 @@ If you mention something, please provide links.
 
 These instructions will get you a copy of the project up and running on for testing purposes.  
 
-1) Set up the physical system according to the circuit drawings. RPi model 4 has the buzzer circuit, while RPi 2 has the door circuit. Both RPis should be connected to a power source. The arduino should be connected to RPi 4 via USB. Connect both RPis to your mobile network.
+1) Set up the physical system according to the circuit drawings. RPi model 4 should be connected to the arduino via USB. While RPi model 2 has the door circuit. Both RPis should be connected to a power source. Connect both RPis to your mobile network.
 <!---
 Add image of door and motor circuit
 -->
 
-<img src="image.png" alt="Buzzer Circuit" width="300">
+<img src="Circuit.png" alt="Circuit" width="800">
+<img src="rpi_zero2W.png" alt="Circuit" width="300">
     
 Camera setup:
     Connect the camera to your computer with a USB cable. A folder will then appear which contains a file called "main.py". Copy the content from that file into OpenMV. Fill in the fields for SSID and KEY with you mobile network name and password. Save the file. Click the connection icon showed in the image below, and then click play. 
