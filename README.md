@@ -11,7 +11,7 @@ The purpose of this project is to design a prototype of an ambient system that w
 This section expands on the introductory paragraph to give readers a better understanding of your project. 
 Include a brief description and answer the question, "what problem does this project solve?"
 -->
-Our project entails two components focusing on equipment monitoring. The first component is a oven monitoring system. A heat source is used to surveill the oven. If the oven has been on for an extended period a warning will display on a webpage. If the warning is not acted upon, the system will activate a kill switch to turn of the oven. 
+Our project entails two components focusing on equipment monitoring. The first component is a oven monitoring system. A heat source is used to surveill the oven. If the oven has been on for an extended period a warning will display on a webpage. If the warning is not acted upon, the system will activate a kill switch to turn of the oven. The implemented kill switch for this project is only for demonstrational purposes. It consist of a motor that drives a fan that will blow out the light of a candle (representing the stove). 
 
 The second component is a door monitoring system. Its purpose will be to alert the user if the front door remains open for an extended period. Real-time updates on the status of the door will be displayed on the web-page. To monitor the door, it is used an electric circuit that is closed whenever the door is closed, so that one can detect if there is any current in the circuit or not. 
 
@@ -31,9 +31,10 @@ If you mention something, please provide links.
     * Battery 9V
     * Breadboards
     * Buzzer
+    * Capacitor
+    * Diode
     * Jumper wires 
     * Motor
-    * Resistor 1K ohm
     * Temperature sensor
     * Transistor 
     * USB cable 
@@ -47,7 +48,8 @@ If you mention something, please provide links.
 ### Software
 
 * [Raspberry Pi OS](https://www.raspberrypi.com/software/) - Operating system
-* [Python]() - Programming language for RPi and Nicla Vision
+* [Python]() - Programming language for RPi 
+* [MicroPython]() - Programming language for Nicla Vision
 * [Reference]() - Programming language for Arduino
 * [Flask]() - Web framework, used for building API
 * [React]() - Web framwork, used for building frontend
