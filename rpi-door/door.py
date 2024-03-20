@@ -26,7 +26,7 @@ def door_monitor():
         if door_status == "open" and time.time() >= timer_end_time:
             alert_status += 1  # Alert triggered
             print("Alert", alert_status) 
-        else:
+        elif door_status == "closed":
             alert_status = 0  # No alert
             reset_timer()
         print(f"Door status: {door_status}")
@@ -40,7 +40,7 @@ def reset_timer():
 @app.route('/alert_time', methods=['GET', 'POST'])
 def door_alert_time():
     """Endpoint to get or update the alert timer duration."""
-    global timer_end_time, current_timer_duration
+    global timer_end_time, current_timer_duration, alert_status
     if request.method == 'POST':
         data = request.json
         try:
@@ -48,6 +48,7 @@ def door_alert_time():
             if new_duration > 0:
                 timer_end_time += (new_duration-current_timer_duration)
                 current_timer_duration = new_duration
+                alert_status = 0  # Reset alert status
                 print("Updated door timer duration to:", new_duration, " seconds")
                 return jsonify({"message": "Door alert time updated successfully", "duration": new_duration}), 200
             else:

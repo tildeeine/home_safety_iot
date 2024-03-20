@@ -36,19 +36,16 @@ def temperature():
 @app.route('/alert_time', methods=['GET', 'POST'])
 def alert_time():
     """Endpoint to get or update the alert timer duration."""
-    global current_timer_duration, timer_end_time, default_timer_duration
+    global current_timer_duration, timer_end_time, default_timer_duration, alert_status
 
     if request.method == 'POST':
         data = request.json
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
-                print("old end time:", timer_end_time)
                 timer_end_time += (new_duration-current_timer_duration)
-                print("New end time:", timer_end_time)
-
-
                 current_timer_duration = new_duration 
+                alert_status = 0
                 print("Updated oventimer duration to:", new_duration, " seconds")
                 return jsonify({"message": "Alert time updated successfully", "duration": new_duration}), 200
             else:
@@ -94,7 +91,7 @@ def monitor_temperature():
                         print("ALERT: Temperature too high for too long!")
                         alert_status += 1
                         ser.write(b'A')  
-                    else:
+                    elif temp <= temp_threshold:
                         alert_status = 0
                         reset_timer()
 
