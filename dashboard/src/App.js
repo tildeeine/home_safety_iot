@@ -52,13 +52,18 @@ function App() {
       ]);
       const tempResponse = responses[0];
       const ovenAlert = responses[1];
-      const doorOpenStatus = responses[2];
+      const doorAlert = responses[2];
       const doorLastChanged = responses[3];
 
       const determineStatus = (count) => {
         if (count >= 2) return Status.PROBLEM;
         if (count === 1) return Status.WARNING;
         return Status.OK;
+      };
+
+      const checkIsOpen = (count) => {
+        if (count > 0) return true;
+        return false;
       };
 
       // Update appliances based on fetched data
@@ -71,9 +76,9 @@ function App() {
         },
         Door: {
           ...prevAppliances.Door,
-          isOpen: doorOpenStatus.data.isOpen,
-          doorLastChanged: doorLastChanged.data.doorLastChanged,
-          status: determineStatus(doorOpenStatus.data.alert),
+          isOpen: checkIsOpen(doorAlert.data.alert),
+          doorLastChanged: doorLastChanged.data.last_changed,
+          status: determineStatus(doorAlert.data.alert),
         }
       }));
     } catch (error) {
@@ -112,7 +117,7 @@ function App() {
                     key={name}
                     appliance={name}
                     isOpen={appliance.isOpen}
-                    doorLastChanged={appliance.doorLastChanged}
+                    lastChanged={appliance.last_changed}
                     onClick={() => handleCardClick(name)}
                     status={appliance.status}
                   />

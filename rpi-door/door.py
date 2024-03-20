@@ -69,10 +69,9 @@ def door_alert_status():
 
 
 @app.route('/door_last_changed', methods=['GET'])
-# TODO implement actual funtionality for setting the last opened time
 def door_last_changed():
     global door_last_changed
-    return jsonify({"last_opened": door_last_changed})
+    return jsonify({"last_changed": door_last_changed})
 
 def start_flask_app():
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
