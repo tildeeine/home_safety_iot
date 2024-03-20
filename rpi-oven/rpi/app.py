@@ -51,6 +51,18 @@ def alert_time():
     else:
         return jsonify({"duration": default_timer_duration // 60}), 200 
     
+
+@app.route('/killOven', methods=['POST'])
+def killOven():
+    """Endpoint to turn off oven."""
+    try:
+        # send signal through serial to turn off oven
+        ser.write(b'B')
+
+        return jsonify({"message": "Appliance turned off successfully"}), 200
+    except (ValueError, KeyError, TypeError):
+        return jsonify({"message": "Error processing request"}), 400
+    
 @app.route('/alert_status/oven', methods=['GET'])
 def get_alert_status():
     global alert_status
