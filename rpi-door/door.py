@@ -78,7 +78,7 @@ def door_last_changed():
     global door_last_changed
     dt_object = datetime.fromtimestamp(door_last_changed)
     human_readable_time = dt_object.strftime('%Y-%m-%d %H:%M:%S')
-    return jsonify({"last_changed": door_last_changed})
+    return jsonify({"last_changed": human_readable_time})
 
 def start_flask_app():
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
