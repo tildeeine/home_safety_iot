@@ -63,17 +63,17 @@ These instructions will get you a copy of the project up and running on for test
 Add image of door and motor circuit
 -->
 
-<img src="Circuit.png" alt="Circuit" width="800">
-<img src="rpi_zero2W.png" alt="Circuit" width="300">
+<img src="img/Circuit.png" alt="Circuit" width="800">
+<img src="img/rpi_zero2W.png" alt="Circuit" width="300">
     
 Camera setup:
     Connect the camera to your computer with a USB cable. A folder will then appear which contains a file called "main.py". Copy the content from that file into OpenMV. Fill in the fields for SSID and KEY with you mobile network name and password. Save the file. Click the connection icon showed in the image below, and then click play. 
         
-<img src="cam_conn.png" alt="connecting camera" width="400">
+<img src="img/cam_conn.png" alt="connecting camera" width="400">
         
     Now wait for the camera to connect to your network (you will see the camera blinking red while looking for you network). When its connected it will tell so in the terminal, in addition to stop blinking. Navigate via "tools" to find the option that says "Save open script to OpenMN Cam (as main.py)". Eject the device before you pysically remove it. The camera should now have the file installed and can be connected to RPi 4 via USB. 
 
-<img src="conn_icon.png" alt="connect icon" width="100">
+<img src="img/conn_icon.png" alt="connect icon" width="100">
 
 2) Clone the repository from github using ssh
 3) Install required packages (visible under "Software Prerequisities") (not sure if this is needed?)
