@@ -18,7 +18,7 @@ const backgroundColorClasses = {
 const Modal = ({
     isOpen,
     onClose,
-    applianceInfo, // Changed to a more generic prop to handle different appliance info
+    applianceInfo,
     url
 }) => {
 
@@ -31,16 +31,14 @@ const Modal = ({
 
     // Fetch current alert time when the modal opens
     useEffect(() => {
-        if (isOpen && applianceInfo.type === 'Oven') {
-            // Fetch current alert time only for the Oven
+        if (isOpen) {
             const fetchAlertTime = async () => {
                 try {
                     const response = await axios.get(`${url}/alert_time`);
                     setCurrentAlertTime(response.data.duration);
-                    setNewTimerDuration(response.data.duration); // Prefill the form with the current alert time for the oven
+                    setNewTimerDuration(response.data.duration);
                 } catch (error) {
-                    console.log("no alert"); //! debugging
-                    // console.error('Failed to fetch alert time:', error);
+                    console.error('Failed to fetch alert time:', error);
                 }
             };
             fetchAlertTime();
@@ -54,19 +52,19 @@ const Modal = ({
             const durationInSeconds = parseInt(newTimerDuration, 10) * 60;
             await axios.post(`${url}/alert_time`, { duration: durationInSeconds });
 
-            setUpdateSuccess(true); // Indicate success
-            setErrorMessage(''); // Clear any previous error message
+            setUpdateSuccess(true);
+            setErrorMessage('');
             setTimeout(() => {
-                setUpdateSuccess(null); // Reset to hide the message
-            }, 3000); // Hide success message after 3 seconds
+                setUpdateSuccess(null);
+            }, 3000);
         } catch (error) {
             console.error('Failed to adjust timer:', error);
-            setUpdateSuccess(false); // Indicate failure
-            setErrorMessage('Failed to adjust timer. Please try again.'); // Set an appropriate error message
+            setUpdateSuccess(false);
+            setErrorMessage('Failed to adjust timer. Please try again.');
             setTimeout(() => {
-                setErrorMessage(''); // Clear the error message
-                setUpdateSuccess(null); // Reset updateSuccess to hide any message
-            }, 3000); // Hide error message after 3 seconds
+                setErrorMessage('');
+                setUpdateSuccess(null);
+            }, 3000);
         }
     };
 
@@ -137,12 +135,12 @@ const Modal = ({
                     </>
                 );
             case 'Door':
-                // Customize content for the Door or other appliances
                 return (
                     <>
                         <h2 className="mb-6 mt-6 text-3xl font-bold">{applianceInfo.type}</h2>
                         <p>Status: {applianceInfo.isOpen ? 'Open' : 'Closed'}</p>
                         <p>Last Opened: {applianceInfo.lastOpened}</p>
+                        <p className="mt-4">Current Alert Time: {currentAlertTime} minutes</p>
                         <form className="modal-form flex flex-col items-center" onSubmit={handleTimerAdjustment}>
                             <label htmlFor="timerDuration" className="mb-2">Set New Alert Time (minutes):</label>
                             <input
