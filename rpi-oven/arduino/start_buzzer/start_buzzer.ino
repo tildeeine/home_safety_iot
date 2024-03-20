@@ -21,21 +21,10 @@ void loop() {
       Serial.println("Command timer on received");
 	    int pitch = map(160,0,200, 50, 4000);
 	    tone(8,pitch,20);
-      
-      for(int x = 0; x <= 255; x++){
-      analogWrite(motorControl, x);
-      delay(50);
-    }
 
-    // ramp down the motor speed
-    for(int x = 255; x >= 0; x--){
-      analogWrite(motorControl, x);
-      delay(50);
-    }  
-    
     } else if (incomingChar == 'B') {
       Serial.println("Command kill switch received");
-      analogWrite(motorPin, 50);
+      analogWrite(motorPin, 80);
       delay(2000);
       analogWrite(motorPin, 0);
     }
