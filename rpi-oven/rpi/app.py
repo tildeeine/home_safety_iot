@@ -44,9 +44,11 @@ def alert_time():
             new_duration = int(data['duration'])
             if new_duration > 0:
                 timer_end_time += (new_duration-current_timer_duration)
+                print("New end time:", timer_end_time)
+
 
                 current_timer_duration = new_duration 
-                print("Updated oventimer duration to:", new_duration, " minutes")
+                print("Updated oventimer duration to:", new_duration, " seconds")
                 return jsonify({"message": "Alert time updated successfully", "duration": new_duration}), 200
             else:
                 return jsonify({"message": "Invalid duration provided"}), 400
@@ -76,7 +78,7 @@ def get_alert_status():
 
 def monitor_temperature():
     """Function to continuously monitor the temperature from the Arduino."""
-    global latest_temp, alert_status
+    global latest_temp, alert_status, temp_threshold, timer_end_time
     while True:
         if ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
@@ -92,6 +94,7 @@ def monitor_temperature():
                         alert_status += 1
                         ser.write(b'A')  
                     elif temp <= temp_threshold:
+                        print("Checked end time: ", timer_end_time)
                         alert_status = 0
                         reset_timer()
             except ValueError:
