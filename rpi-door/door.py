@@ -27,9 +27,10 @@ def door_monitor():
             alert_status += 1  # Alert triggered
             print("Alert", alert_status) #!
         elif door_status == "closed":
-            print("Check endtime: ", timer_end_time) #!
             alert_status = 0  # No alert
             reset_timer()
+        else:
+            print("Check endtime: ", timer_end_time) #!
         print(f"Door status: {door_status}")
         time.sleep(1)  # Check every second
 

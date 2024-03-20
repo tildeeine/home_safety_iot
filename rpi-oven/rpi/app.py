@@ -94,9 +94,11 @@ def monitor_temperature():
                         alert_status += 1
                         ser.write(b'A')  
                     elif temp <= temp_threshold:
-                        print("Checked end time: ", timer_end_time)
                         alert_status = 0
                         reset_timer()
+                    else:
+                        print("Checked end time: ", timer_end_time)
+
             except ValueError:
                 print(f"Error converting temperature value: {line}")
         time.sleep(1)
