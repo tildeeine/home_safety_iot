@@ -45,8 +45,9 @@ def door_alert_time():
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
-                timer_end_time += new_duration * 60
-                default_timer_duration = new_duration * 60
+                timer_end_time += new_duration 
+                default_timer_duration = new_duration /#! Right now in seconds, for testing
+                print("Updated timer duration to:", new_duration)
                 return jsonify({"message": "Door alert time updated successfully", "duration": new_duration}), 200
             else:
                 return jsonify({"message": "Invalid duration provided"}), 400

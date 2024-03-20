@@ -44,6 +44,7 @@ def alert_time():
             if new_duration > 0:
                 timer_end_time += new_duration * 60
                 default_timer_duration = new_duration # * 60 
+                print("Updated timer duration to:", new_duration)
                 return jsonify({"message": "Alert time updated successfully", "duration": new_duration}), 200
             else:
                 return jsonify({"message": "Invalid duration provided"}), 400
