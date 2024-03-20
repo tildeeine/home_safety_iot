@@ -158,7 +158,6 @@ Comment from Tuva: Need to add installs for the frontend, i dont know what they 
 npm install react
 npm install --save @fortawesome/free-solid-svg-icons
 npm install --save @fortawesome/react-fontawesome
-source tutorial-env/bin/activate
 ```
 
 ### Installation
@@ -187,7 +186,6 @@ Installing arduino-cli is needed to run the arduino code. Navigate to the folder
 curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
 mv bin/arduino-cli .
 chmod a+x arduino-cli
-Updating index: package_index.json downloaded
 sudo ./arduino-cli core install arduino:avr
 sudo ./arduino-cli core search
 sudo ./arduino-cli compile --fqbn arduino:avr:uno start_buzzer/
