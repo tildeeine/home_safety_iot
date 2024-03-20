@@ -66,6 +66,8 @@ Add image of door and motor circuit
 -->
 
 <img src="img/Circuit.png" alt="Circuit" width="800">
+![image](https://github.com/tildeeine/ambint_project/assets/72617926/6ce170db-7bf6-416d-8c63-2100e2c09247)
+
 <img src="img/rpi_zero2W.png" alt="Circuit" width="300">
     
 Camera setup:
@@ -92,7 +94,6 @@ d. Disconnect(symbol below) and eject the device before you physically remove it
     }
 ```
 
-### Assembly Instructions
 <!---
 
 Describe step-by-step assembly instructions.
