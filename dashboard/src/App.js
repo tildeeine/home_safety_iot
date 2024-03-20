@@ -77,7 +77,7 @@ function App() {
         Door: {
           ...prevAppliances.Door,
           isOpen: checkIsOpen(doorAlert.data.alert),
-          doorLastChanged: doorLastChanged.data.last_changed,
+          last_changed: doorLastChanged.data.last_changed,
           status: determineStatus(doorAlert.data.alert),
         }
       }));

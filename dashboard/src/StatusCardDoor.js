@@ -22,7 +22,8 @@ const StatusCardDoor = ({ isOpen, lastChanged, appliance, onClick, status }) => 
 
     // Determine icon and status message based on isOpen
     const icon = isOpen ? faDoorOpen : faDoorClosed;
-    const changeTime = new Date(lastChanged);
+    const message = isOpen ? 'opened' : 'closed';
+
 
     return (
         <button className="link-like-button w-1/2 justify-items-center px-3 py-7" onClick={onClick}>
@@ -32,7 +33,7 @@ const StatusCardDoor = ({ isOpen, lastChanged, appliance, onClick, status }) => 
                     <FontAwesomeIcon icon={icon} className="text-5xl p-2" />
                 </div>
                 <p className="font-normal md:text-xl text-md pt-4">{statusMessage[status]}</p>
-                <p className="font-normal md:text-xl text-md pt-4"> Last opened at {lastChanged}</p>
+                <p className="font-normal md:text-xl text-md pt-4"> Last {message} at {lastChanged}</p>
             </div>
         </button>
     );
