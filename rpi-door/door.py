@@ -25,12 +25,10 @@ def door_monitor():
         door_status = "open" if not button.is_pressed else "closed"
         if door_status == "open" and time.time() >= timer_end_time:
             alert_status += 1  # Alert triggered
-            print("Alert", alert_status) #!
-        elif door_status == "closed":
+            print("Alert", alert_status) 
+        else:
             alert_status = 0  # No alert
             reset_timer()
-        else:
-            print("Check endtime: ", timer_end_time) #!
         print(f"Door status: {door_status}")
         time.sleep(1)  # Check every second
 
@@ -48,10 +46,7 @@ def door_alert_time():
         try:
             new_duration = int(data['duration'])
             if new_duration > 0:
-                print("old end time:", timer_end_time)
-
                 timer_end_time += (new_duration-current_timer_duration)
-                print("New end time:", timer_end_time)
                 current_timer_duration = new_duration
                 print("Updated door timer duration to:", new_duration, " seconds")
                 return jsonify({"message": "Door alert time updated successfully", "duration": new_duration}), 200
