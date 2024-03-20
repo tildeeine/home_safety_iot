@@ -3,7 +3,8 @@
 Begin with an introductory paragraph that tells readers the purpose of your solution with hardware and software and its major benefits. 
 Give them a summary of the information you will include in this file using clearly defined sections.
 -->
-Ambient Intelligence (AmI) is a technology that enables simplification and automation of our everyday lives through the use of sensors embedded in our environment. One specific use area for this technology is to allow at-risk individuals to live independently and safely at home for longer. For our project, we have chosen to focus on individuals with memory impairments or attention deficit disorders.  
+
+The purpose of this project is to design a prototype of an ambient system that will allow at-risk individuals to live independently and safely at home for longer. This is done by integrating software and hardware to monitor home appliances that could be a possible danger if left unsupervised. For this prototype we have implemented monitoring of a stove and a door. The system comes with a webpage that is easy to read and use.
 
 ## General Information
 <!---
@@ -55,25 +56,27 @@ If you mention something, please provide links.
 
 These instructions will get you a copy of the project up and running on for testing purposes.  
 
-1) Set up the physical system 
+1) Set up the physical system according to the circuit drawings. RPi model 4 has the buzzer circuit, while RPi 2 has the door circuit. Both RPis should be connected to a power source. The arduino should be connected to RPi 4 via USB. Connect both RPis to your mobile network.
+<!---
+Add image of door and motor circuit
+-->
 
- <img src="image.png" alt="Buzzer Circuit" width="300">
+<img src="image.png" alt="Buzzer Circuit" width="300">
+    
+Camera setup:
+    Connect the camera to your computer with a USB cable. A folder will then appear which contains a file called "main.py". Copy the content from that file into OpenMV. Fill in the fields for SSID and KEY with you mobile network name and password. Save the file. Click the connection icon showed in the image below, and then click play. 
+        
+<img src="cam_conn.png" alt="connecting camera" width="400">
+        
+    Now wait for the camera to connect to your network (you will see the camera blinking red while looking for you network). When its connected it will tell so in the terminal, in addition to stop blinking. Navigate via "tools" to find the option that says "Save open script to OpenMN Cam (as main.py)". Eject the device before you pysically remove it. The camera should now have the file installed and can be connected to RPi 4 via USB. 
+
+<img src="conn_icon.png" alt="connect icon" width="100">
 
 2) Clone the repository from github using ssh
 3) Install required packages (visible under "Software Prerequisities") (not sure if this is needed?)
-4) If there has been made any changes to the arduino code, a compile and upload is necessary. This must be done inside the folder /arduino:
+4) Identify IP adresses for both RPis and the camera: `nmap -sn 172.20.10.0/24`
+5) Identify your mobile network name and password. The IP adresses and mobile network information should be added to the file called "network_info.json" in the following format:
 ```
-sudo ./arduino-cli compile --fqbn arduino:avr:uno start_buzzer/
-sudo ./arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno start_buzzer/
-```
-If you have issues with this you could try to list the board to check if its name has changed from ttyACM0 to something else, as this happens from time to time: 
-`
-sudo ./arduino-cli board list
-`
-
-For further information about the arduino-cli commands see: https://www.caronteconsulting.com/en/news/how-to/raspberry-arduino-cli/
-
-5) Identify IP adresses for both RPis and the camera. HOW? Identify your mobile network name and password. This information should be added to the file called "network_info.json" in the following format:
     {
         "SSID": "",
         "password": "",
@@ -81,7 +84,7 @@ For further information about the arduino-cli commands see: https://www.carontec
         "DoorRPiIP": "",
         "CameraIP": ""
     }
-
+```
 
 ### Assembly Instructions
 <!---
@@ -104,25 +107,23 @@ Comment from Tuva: This section needs to be updated to include the last changes,
 
 Navigate to the folder where you have cloned the github repository. 
 
-Connect both RPis to your mobile network by writing the following in two different terminals:
+Connect to both RPis by writing the following in two different terminals: `ssh g14@<IP address of respective RPi>`
+
+Enter the password: `g14`
+
+In RPi 4 navigate to `/rpi-oven/rpi` and create and activate a virtual environment:
+<!---
+Add code for creating env
+-->
 ```
-ssh g14@<IP address of respective RPi>
+python -m venv rPi4env
+source rPi4env/bin/activate
+pip intall flask flask_cors pyserial
+source <name of envirnoment>/bin/activate
 ```
-
-Then enter the password 
-`
-g14
-`
-
-Run the file for the oven monitoring
-`
-python app.py
-`
-
-Run the file for the door monitoring
-`
-python door.py
-`
+Run the file for the oven monitoring: `python app.py`
+In RPi 2 run the file for the door monitoring: `python door.py`
+In a new terminal write: `npm start` in order to start sending images from the camera over the network.
 
 
 
@@ -131,6 +132,7 @@ python door.py
 - OpenMV for programming nicla vision
 - Arduino IDE for programming arduino
 - Some IDE on your computer to program RPis
+- Arduino-cli
 - Libraries and dependencies
     - flask
     - flask_corse
@@ -145,15 +147,19 @@ python door.py
 
 - Node package manager
 
+<!---
 In this section include detailed instructions for installing additional software the application is dependent upon (such as PostgreSQL database, for example).
+Comment from Tuva: Need to add installs for the frontend, i dont know what they are...
+-->
 ```sh
+npm install react
 npm install --save @fortawesome/free-solid-svg-icons
 npm install --save @fortawesome/react-fontawesome
-npm install react
 source tutorial-env/bin/activate
 ```
 
 ### Installation
+<!---
 
 Give step-by-step instructions on building and running the application on the testing environment. 
 
@@ -170,8 +176,34 @@ until finished
 ```
 
 You can also add screenshots to show expected results, when relevant.
+-->
 
+#### Arduino code
+Installing arduino-cli is needed to run the arduino code. Navigate to the folder /arduino. Then do the following commands:
+```
+curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+mv bin/arduino-cli .
+chmod a+x arduino-cli
+Updating index: package_index.json downloaded
+sudo ./arduino-cli core install arduino:avr
+sudo ./arduino-cli core search
+sudo ./arduino-cli compile --fqbn arduino:avr:uno start_buzzer/
+sudo ./arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno start_buzzer/
+```
+Each time you make changes to the .ino file a compile and upload is necessary. This must be done inside the folder /arduino.
+
+If you have issues with this you could try to list the board to check if its name has changed from ttyACM0 to something else, as this happens from time to time: 
+`
+sudo ./arduino-cli board list
+`
+
+For further information about the arduino-cli commands see: https://www.caronteconsulting.com/en/news/how-to/raspberry-arduino-cli/
+
+
+
+<!---
 ### Testing
+Comment from Tuva: not sure what should be in here
 
 Explain how to run the tests for this system.
 
@@ -180,13 +212,14 @@ Give users explicit instructions on how to run all necessary tests.
 Explain what these tests do and why
 
 ```
-Give an example command
+Give an example command 
 ```
 
 ## Demo
 
 Give a tour of the best features of the application.
 Add screenshots when relevant.
+-->
 
 ## Additional Information
 
