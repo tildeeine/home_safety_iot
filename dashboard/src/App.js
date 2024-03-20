@@ -29,10 +29,10 @@ function App() {
   // State hooks
   const [appliances, setAppliances] = useState({
     Oven: { temperature: 0, status: Status.OK, icon: faFireBurner, type: 'Oven', url: RPI_OVEN_URL },
-    Door: { isOpen: false, lastOpened: 'Not available', status: Status.OK, icon: faFireBurner, type: 'Door', url: RPI_DOOR_URL },
+    Door: { last_changed: 'Not available', isOpen: false, status: Status.OK, type: 'Door', url: RPI_DOOR_URL },
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAppliance, setSelectedAppliance] = useState(null);
+  const [selectedAppliance, setSelectedAppliance] = useState('Oven');
 
   // Handle card click events
   const handleCardClick = (appliance) => {
@@ -48,17 +48,22 @@ function App() {
         axios.get(`${RPI_OVEN_URL}/temperature`),
         axios.get(`${RPI_OVEN_URL}/alert_status`),
         axios.get(`${RPI_DOOR_URL}/alert_status`),
-        axios.get(`${RPI_DOOR_URL}/door_last_opened`),
+        axios.get(`${RPI_DOOR_URL}/door_last_changed`),
       ]);
       const tempResponse = responses[0];
       const ovenAlert = responses[1];
-      const doorOpenStatus = responses[2];
-      const lastOpened = responses[3];
+      const doorAlert = responses[2];
+      const doorLastChanged = responses[3];
 
       const determineStatus = (count) => {
         if (count >= 2) return Status.PROBLEM;
         if (count === 1) return Status.WARNING;
         return Status.OK;
+      };
+
+      const checkIsOpen = (count) => {
+        if (count > 0) return true;
+        return false;
       };
 
       // Update appliances based on fetched data
@@ -71,9 +76,9 @@ function App() {
         },
         Door: {
           ...prevAppliances.Door,
-          isOpen: doorOpenStatus.data.isOpen,
-          lastOpened: lastOpened.data.lastOpened,
-          status: determineStatus(doorOpenStatus.data.alert),
+          isOpen: checkIsOpen(doorAlert.data.alert),
+          last_changed: doorLastChanged.data.last_changed,
+          status: determineStatus(doorAlert.data.alert),
         }
       }));
     } catch (error) {
@@ -112,7 +117,7 @@ function App() {
                     key={name}
                     appliance={name}
                     isOpen={appliance.isOpen}
-                    lastOpened={appliance.lastOpened}
+                    lastChanged={appliance.last_changed}
                     onClick={() => handleCardClick(name)}
                     status={appliance.status}
                   />
@@ -125,6 +130,8 @@ function App() {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             applianceInfo={selectedAppliance}
+            status={selectedAppliance?.status}
+            mainData={selectedAppliance?.type === 'Oven' ? selectedAppliance.temperature : selectedAppliance.doorLastChanged}
             url={selectedAppliance?.url}
           />
         </div>

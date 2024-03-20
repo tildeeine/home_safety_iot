@@ -4,6 +4,7 @@ from gpiozero import Button
 from signal import SIGTERM, signal
 import threading
 import time
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -18,16 +19,20 @@ default_timer_duration = 4  # 4 sec, test value
 current_timer_duration = default_timer_duration
 timer_end_time = time.time() + default_timer_duration
 alert_status = 0
+door_last_changed = 0 # To show not set yet
 
 def door_monitor():
-    global door_status, alert_status, timer_end_time
+    global door_status, alert_status, timer_end_time, door_last_changed
     while True:
         door_status = "open" if not button.is_pressed else "closed"
         if door_status == "open" and time.time() >= timer_end_time:
             alert_status += 1  # Alert triggered
+            if alert_status == 1:
+                door_last_changed = time.time()
             print("Alert", alert_status) 
         elif door_status == "closed":
             alert_status = 0  # No alert
+            door_last_changed = time.time()
             reset_timer()
         print(f"Door status: {door_status}")
         time.sleep(1)  # Check every second
@@ -67,10 +72,15 @@ def door_alert_status():
     return jsonify({"alert": alert_status})
 
 
-@app.route('/door_last_opened', methods=['GET'])
-def door_last_opened():
-    global timer_end_time
-    return jsonify({"last_opened": timer_end_time})#!wrong, just for testing
+@app.route('/door_last_changed', methods=['GET'])
+def door_last_changed():
+    global door_last_changed
+    try:
+        dt_object = datetime.fromtimestamp(door_last_changed)
+        human_readable_time = dt_object.strftime('%Y-%m-%d %H:%M:%S')
+        return jsonify({"last_changed": human_readable_time})
+    except:
+        return jsonify({"last_changed": "Not set yet"})
 
 def start_flask_app():
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)

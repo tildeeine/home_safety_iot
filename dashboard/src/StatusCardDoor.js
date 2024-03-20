@@ -13,7 +13,7 @@ const backgroundColorClasses = {
     [Status.PROBLEM]: "bg-orange-600 hover:bg-orange-500 text-gray-100",
 };
 
-const StatusCardDoor = ({ isOpen, lastOpened, appliance, onClick, status }) => {
+const StatusCardDoor = ({ isOpen, lastChanged, appliance, onClick, status }) => {
     const statusMessage = {
         [Status.OK]: `The ${appliance} is closed.`,
         [Status.WARNING]: `Warning: The ${appliance} has been open for a while!`,
@@ -22,6 +22,8 @@ const StatusCardDoor = ({ isOpen, lastOpened, appliance, onClick, status }) => {
 
     // Determine icon and status message based on isOpen
     const icon = isOpen ? faDoorOpen : faDoorClosed;
+    const message = isOpen ? 'opened' : 'closed';
+
 
     return (
         <button className="link-like-button w-1/2 justify-items-center px-3 py-7" onClick={onClick}>
@@ -31,7 +33,7 @@ const StatusCardDoor = ({ isOpen, lastOpened, appliance, onClick, status }) => {
                     <FontAwesomeIcon icon={icon} className="text-5xl p-2" />
                 </div>
                 <p className="font-normal md:text-xl text-md pt-4">{statusMessage[status]}</p>
-                <p className="font-normal md:text-xl text-md pt-4"> Last opened at {lastOpened}</p>
+                <p className="font-normal md:text-xl text-md pt-4"> Last {message} at {lastChanged}</p>
             </div>
         </button>
     );
