@@ -20,13 +20,13 @@ void loop() {
     if (incomingChar == 'A') {
       Serial.println("Command timer on received");
 	    int pitch = map(160,0,200, 50, 4000);
-	    tone(8,pitch,20);
+	    // tone(8,pitch,20);
 
     } else if (incomingChar == 'B') {
       Serial.println("Command kill switch received");
-      analogWrite(motorPin, 100);
-      delay(2000);
-      analogWrite(motorPin, 0);
+      digitalWrite(motorPin, HIGH);
+      delay(4000);
+      digitalWrite(motorPin, LOW);
     }
   }
 }
