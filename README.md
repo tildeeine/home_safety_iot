@@ -66,6 +66,7 @@ Add image of door and motor circuit
 -->
 
 <img src="img/Circuit.png" alt="Circuit" width="800">
+
 <img src="img/rpi_zero2W.png" alt="Circuit" width="300">
     
 Camera setup:
@@ -92,7 +93,6 @@ d. Disconnect(symbol below) and eject the device before you physically remove it
     }
 ```
 
-### Assembly Instructions
 <!---
 
 Describe step-by-step assembly instructions.
