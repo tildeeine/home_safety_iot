@@ -5,6 +5,7 @@ from signal import SIGTERM, signal
 import threading
 import time
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -84,7 +85,8 @@ def door_last_changed():
         return jsonify({"last_changed": "Not set yet"})
 
 def start_flask_app():
-    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() in ['true', '1', 't']
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode, use_reloader=False)
 
 if __name__ == '__main__':
     # Start the door monitor in a background thread
